@@ -32,7 +32,7 @@ class EmployeeController {
 
     @PostMapping
     void createEmployee(@RequestBody EmployeeDto employeeDto) {
-        employeeService.createParticipant(employeeDto);
+        employeeService.createEmployee(employeeDto);
     }
 
     @PatchMapping("/{employeeId}")

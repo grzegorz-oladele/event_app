@@ -3,6 +3,7 @@ package pl.grzegorz.eventapp.events;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.grzegorz.eventapp.email.message.MessageFactory;
 import pl.grzegorz.eventapp.events.dto.input.EventDto;
 import pl.grzegorz.eventapp.events.dto.output.EventOutputDto;
 import pl.grzegorz.eventapp.exceptions.EntityException;

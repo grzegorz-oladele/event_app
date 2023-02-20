@@ -3,6 +3,8 @@ package pl.grzegorz.eventapp.employees;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.grzegorz.eventapp.email.EmailService;
 import pl.grzegorz.eventapp.exceptions.EntityException;
 import pl.grzegorz.eventapp.exceptions.ParticipantException;
 import pl.grzegorz.eventapp.employees.dto.input.EmployeeEndOfWorkDto;
@@ -26,6 +28,7 @@ class EmployeeServiceImpl implements EmployeeService {
     private static final String EMPLOYEE_RETURN_LIST_LOG_ERROR_MESSAGE = "Return list of employees counting {} records";
 
     private final EmployeeRepository employeeRepository;
+    private final EmailService emailService;
 
     @Override
     public List<EmployeeOutputDto> getAllParticipants() {
@@ -73,7 +76,8 @@ class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void createParticipant(EmployeeDto employeeDto) {
+    @Transactional
+    public void createEmployee(EmployeeDto employeeDto) {
         EmployeeEntity employeeEntity = toEntity(employeeDto);
         employeeRepository.save(employeeEntity);
         log.info("Create new employee with id -> {}", employeeEntity.getId());
