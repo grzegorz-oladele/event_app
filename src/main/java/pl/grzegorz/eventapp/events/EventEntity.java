@@ -2,7 +2,8 @@ package pl.grzegorz.eventapp.events;
 
 import lombok.*;
 import pl.grzegorz.eventapp.events.dto.input.EventDto;
-import pl.grzegorz.eventapp.employees.dto.simple_entity.EmployeeSimpleEntity;
+import pl.grzegorz.eventapp.participants.ParticipantSimpleEntity;
+import pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,7 +32,9 @@ class EventEntity {
     private Integer limitOfParticipants;
     private Integer currentParticipantsNumber;
     @ManyToMany
-    private List<EmployeeSimpleEntity> participants;
+    private List<OrganizerSimpleEntity> organizers;
+    @ManyToMany
+    private List<ParticipantSimpleEntity> participants;
 
     static EventEntity toEntity(EventDto eventDto) {
         return EventEntity.builder()

@@ -24,18 +24,23 @@ class EventController {
         return eventService.getEventById(eventId);
     }
 
-    @PostMapping
-    void createEvent(@RequestBody EventDto eventDto) {
-        eventService.createEvent(eventDto);
+    @PostMapping("/{employeeId}/employees")
+    void createEvent(@PathVariable long employeeId ,@RequestBody EventDto eventDto) {
+        eventService.createEvent(employeeId, eventDto);
     }
 
-    @PatchMapping("/{eventId}")
-    void editEventById(@PathVariable long eventId, @RequestBody EventDto eventDto) {
-        eventService.editEventById(eventId, eventDto);
+    @PatchMapping("/{eventId}/employees/{mainOrganizerId}")
+    void editEventById(@PathVariable long mainOrganizerId, @PathVariable long eventId, @RequestBody EventDto eventDto) {
+        eventService.editEventById(mainOrganizerId, eventId, eventDto);
     }
 
-    @PutMapping("/{eventId}/employees/{employeeId}")
-    void addEmployeeToEvent(@PathVariable long eventId, @PathVariable long employeeId) {
-        eventService.addEmployeeToEvent(eventId, employeeId);
+    @PatchMapping("/{eventId}/employees/{mainOrganizerId}")
+    void addEmployeeToEventAsOrganizer(@PathVariable long eventId, @PathVariable long mainOrganizerId) {
+        eventService.addEmployeeToEventAsOrganizer(eventId, mainOrganizerId);
+    }
+
+    @PatchMapping("/{eventId}/employees/{mainOrganizerId}")
+    void addEmployeeToEventAsOrganizer(@PathVariable long eventId, @PathVariable long mainOrganizerId) {
+        eventService.addEmployeeToEventAsOrganizer(eventId, mainOrganizerId);
     }
 }

@@ -3,7 +3,6 @@ package pl.grzegorz.eventapp.employees;
 import pl.grzegorz.eventapp.employees.dto.input.EmployeeEndOfWorkDto;
 import pl.grzegorz.eventapp.employees.dto.input.EmployeeDto;
 import pl.grzegorz.eventapp.employees.dto.output.EmployeeOutputDto;
-import pl.grzegorz.eventapp.employees.dto.simple_entity.EmployeeSimpleEntity;
 
 import java.util.List;
 

@@ -11,9 +11,10 @@ public interface EventService {
 
     EventOutputDto getEventById(long eventId);
 
-    void createEvent(EventDto eventDto);
+    void createEvent(long employeeId, EventDto eventDto);
 
-    void editEventById(long eventId, EventDto eventDto);
+    void editEventById(long mainOrganizerId, long eventId, EventDto eventDto);
 
-    void addEmployeeToEvent(long eventId, long employeeId);
+    void addEmployeeToEventAsOrganizer(long eventId, long mainOrganizerId, long employeeId);
+    void addEmployeeToEventAsParticipant(long eventId, long mainOrganizerId, long employeeId);
 }

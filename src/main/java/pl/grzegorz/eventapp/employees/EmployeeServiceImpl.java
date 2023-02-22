@@ -10,7 +10,6 @@ import pl.grzegorz.eventapp.exceptions.ParticipantException;
 import pl.grzegorz.eventapp.employees.dto.input.EmployeeEndOfWorkDto;
 import pl.grzegorz.eventapp.employees.dto.input.EmployeeDto;
 import pl.grzegorz.eventapp.employees.dto.output.EmployeeOutputDto;
-import pl.grzegorz.eventapp.employees.dto.simple_entity.EmployeeSimpleEntity;
 
 import java.time.LocalDate;
 import java.util.List;

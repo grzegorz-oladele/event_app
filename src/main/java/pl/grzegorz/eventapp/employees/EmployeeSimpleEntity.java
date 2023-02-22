@@ -1,4 +1,4 @@
-package pl.grzegorz.eventapp.employees.dto.simple_entity;
+package pl.grzegorz.eventapp.employees;
 
 import lombok.Getter;
 

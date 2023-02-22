@@ -1,8 +1,8 @@
-package pl.grzegorz.eventapp.members;
+package pl.grzegorz.eventapp.participants;
 
 import lombok.*;
-import pl.grzegorz.eventapp.employees.dto.simple_entity.EmployeeSimpleEntity;
-import pl.grzegorz.eventapp.events.dto.simple_entity.EventSimpleEntity;
+import pl.grzegorz.eventapp.employees.EmployeeSimpleEntity;
+import pl.grzegorz.eventapp.events.EventSimpleEntity;
 
 import javax.persistence.*;
 
@@ -12,12 +12,11 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Table(name = "members")
-@Getter(value = PROTECTED)
-@Setter(value = PROTECTED)
+@Getter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Builder(access = PRIVATE, setterPrefix = "with")
-class MemberEntity {
+public class ParticipantSimpleEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -27,10 +26,11 @@ class MemberEntity {
     @OneToOne
     private EventSimpleEntity event;
 
-    static MemberEntity toEntity(EmployeeSimpleEntity employee, EventSimpleEntity event) {
-        return MemberEntity.builder()
-                .withEmployee(employee)
-                .withEvent(event)
+    public static ParticipantSimpleEntity toSimpleEntity(ParticipantEntity participant) {
+        return ParticipantSimpleEntity.builder()
+                .withId(participant.getId())
+                .withEmployee(participant.getEmployee())
+                .withEvent(participant.getEvent())
                 .build();
     }
 }

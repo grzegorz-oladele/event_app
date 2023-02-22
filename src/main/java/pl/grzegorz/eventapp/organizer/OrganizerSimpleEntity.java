@@ -3,20 +3,21 @@ package pl.grzegorz.eventapp.organizer;
 import lombok.*;
 import pl.grzegorz.eventapp.employees.EmployeeSimpleEntity;
 import pl.grzegorz.eventapp.events.EventSimpleEntity;
+import pl.grzegorz.eventapp.organizer.EventRole;
 
 import javax.persistence.*;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
+import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
 
 @Entity
 @Table(name = "organizers")
 @Getter
-@Setter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Builder(access = PRIVATE, setterPrefix = "with")
-class OrganizerEntity {
+public class OrganizerSimpleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +29,16 @@ class OrganizerEntity {
     @Enumerated(value = EnumType.STRING)
     private EventRole role;
 
-    static OrganizerEntity toEntity(EmployeeSimpleEntity employee, EventSimpleEntity event, EventRole role) {
-        return OrganizerEntity.builder()
-                .withEmployee(employee)
-                .withEvent(event)
-                .withRole(role)
+    public void setAssistantRole() {
+        this.role = ASSISTANT;
+    }
+
+    public static OrganizerSimpleEntity toSimpleEntity(OrganizerEntity organizer) {
+        return OrganizerSimpleEntity.builder()
+                .withId(organizer.getId())
+                .withEmployee(organizer.getEmployee())
+                .withEvent(organizer.getEvent())
+                .withRole(organizer.getRole())
                 .build();
     }
 }

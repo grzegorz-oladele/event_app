@@ -1,6 +1,6 @@
 package pl.grzegorz.eventapp.organizer;
 
-enum EventRole {
+public enum EventRole {
 
     MAIN_ORGANIZER,
     ASSISTANT
