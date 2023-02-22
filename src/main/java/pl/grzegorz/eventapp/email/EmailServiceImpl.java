@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import pl.grzegorz.eventapp.email.dto.MessageDto;
+import pl.grzegorz.eventapp.email.message.MessageDto;
 
 @Service
 @RequiredArgsConstructor

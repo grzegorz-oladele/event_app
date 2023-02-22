@@ -1,6 +1,7 @@
 package pl.grzegorz.eventapp.email.message;
 
-public interface MessageFactory {
+@FunctionalInterface
+interface MessageCreator {
 
     MessageDto getMessage(String to);
 }

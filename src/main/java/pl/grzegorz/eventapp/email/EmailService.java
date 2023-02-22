@@ -1,6 +1,6 @@
 package pl.grzegorz.eventapp.email;
 
-import pl.grzegorz.eventapp.email.dto.MessageDto;
+import pl.grzegorz.eventapp.email.message.MessageDto;
 
 public interface EmailService {
 

@@ -1,4 +1,4 @@
-package pl.grzegorz.eventapp.email.dto;
+package pl.grzegorz.eventapp.email.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
