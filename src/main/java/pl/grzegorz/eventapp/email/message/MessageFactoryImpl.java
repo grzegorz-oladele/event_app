@@ -8,7 +8,7 @@ import static pl.grzegorz.eventapp.email.message.MessageTemplate.CREATE_EMPLOYEE
 
 @Component
 @NoArgsConstructor(access = PRIVATE)
-class MessageFactoryImpl implements MessageFactory{
+class MessageFactoryImpl implements MessageFactory {
 
     @Override
     public MessageDto getMessage(String to) {
