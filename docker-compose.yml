@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  #  DATABASE
+  event_db:
+    container_name: event_db
+    image: postgres:14
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: event_db
+      POSTGRES_PORT: 5432
+    restart: always
+    networks:
+      - event
+
+  #  APPLICATION
+  event_app:
+    container_name: event_app
+    image: grzesiekoladele/event_app:v2-without-security
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://event_db:5432/event_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_MVC_PATHMATCH_MATCHING_STRATEGY: ant-path-matcher
+    restart: always
+    depends_on:
+      - event_db
+    networks:
+      - event
+networks:
+  event:
+    driver: bridge

@@ -1,6 +1,8 @@
 package pl.grzegorz.eventapp.organizer;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import pl.grzegorz.eventapp.employees.EmployeeSimpleEntity;
 import pl.grzegorz.eventapp.events.EventSimpleEntity;
 

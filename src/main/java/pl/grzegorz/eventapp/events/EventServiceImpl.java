@@ -8,17 +8,20 @@ import pl.grzegorz.eventapp.employees.EmployeeService;
 import pl.grzegorz.eventapp.employees.EmployeeSimpleEntity;
 import pl.grzegorz.eventapp.events.dto.input.EventDto;
 import pl.grzegorz.eventapp.events.dto.output.EventOutputDto;
-import pl.grzegorz.eventapp.exceptions.EntityException;
+import pl.grzegorz.eventapp.exceptions.OrganizerException;
 import pl.grzegorz.eventapp.exceptions.ParticipantException;
 import pl.grzegorz.eventapp.organizer.OrganizerService;
 import pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity;
 import pl.grzegorz.eventapp.participants.ParticipantService;
 import pl.grzegorz.eventapp.participants.ParticipantSimpleEntity;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Iterator;
 import java.util.List;
 
 import static pl.grzegorz.eventapp.events.EventEntity.toEntity;
-import static pl.grzegorz.eventapp.events.EventSimpleEntity.toSimpleEntity;
+import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
+import static pl.grzegorz.eventapp.organizer.EventRole.MAIN_ORGANIZER;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +29,10 @@ import static pl.grzegorz.eventapp.events.EventSimpleEntity.toSimpleEntity;
 class EventServiceImpl implements EventService {
 
     private static final String EVENT_NOT_FOUND_MESSAGE = "Event not found";
-    private static final String EVENT_NOT_FOUND_LOG_ERROR_MESSAGE = "Event using id -> {} not found";
 
     private final EventRepository eventRepository;
-    private final EmployeeService employeeService;
     private final OrganizerService organizerService;
+    private final EmployeeService employeeService;
     private final ParticipantService participantService;
 
     @Override
@@ -43,22 +45,23 @@ class EventServiceImpl implements EventService {
     @Override
     public EventOutputDto getEventById(long eventId) {
         return eventRepository.findAllById(eventId)
-                .orElseThrow(() -> getEntityNotFoundException(eventId));
+                .orElseThrow(() -> {
+                    log.error("Event with id -> {} not found", eventId);
+                    throw new EntityNotFoundException(EVENT_NOT_FOUND_MESSAGE);
+                });
     }
 
     @Override
+    @Transactional
     public void createEvent(long employeeId, EventDto eventDto) {
         EventEntity event = toEntity(eventDto);
-        OrganizerSimpleEntity organizerSimple = getOrganizerSimpleEntity(employeeId, event);
-        event.getOrganizers().add(organizerSimple);
-        eventRepository.save(event);
-        log.info("Create new event with id -> {}", event.getId());
-    }
-
-    private OrganizerSimpleEntity getOrganizerSimpleEntity(long employeeId, EventEntity event) {
-        EmployeeSimpleEntity employeeSimple = employeeService.getWorkingEmployeeSimpleEntityById(employeeId);
-        EventSimpleEntity eventSimple = toSimpleEntity(event);
-        return organizerService.createOrganizer(employeeSimple, eventSimple);
+        EventEntity savedEvent = eventRepository.save(event);
+        log.info("Create new event with id -> {}", savedEvent.getId());
+        EmployeeSimpleEntity employeeSimple = employeeService.getEmployeeSimpleEntityById(employeeId);
+        EventSimpleEntity eventSimple = EventSimpleEntity.toSimpleEntity(savedEvent);
+        OrganizerSimpleEntity organizerSimple = organizerService.createOrganizer(employeeSimple, eventSimple, MAIN_ORGANIZER);
+        savedEvent.getOrganizers().add(organizerSimple);
+        eventRepository.save(savedEvent);
     }
 
     @Override
@@ -69,99 +72,115 @@ class EventServiceImpl implements EventService {
         EventEntity editedEventEntity = toEntity(eventDto);
         editedEventEntity.getParticipants().addAll(participants);
         editedEventEntity.getOrganizers().addAll(organizers);
+        editedEventEntity.setId(eventId);
         eventRepository.save(editedEventEntity);
         log.info("Save edited event with id -> {}", eventId);
     }
 
     @Override
     @Transactional
-    public void addEmployeeToEventAsOrganizer(long eventId, long mainOrganizerId, long employeeId) {
+    public void addEmployeeAsOrganizer(long mainOrganizerId, long employeeId, long eventId) {
         EventEntity event = getEventEntityById(eventId);
-
-        EmployeeSimpleEntity employeeSimple = employeeService.getWorkingEmployeeSimpleEntityById(employeeId);
-        checkEmployeeExistInEventAndThrowExceptionIfIs(event, employeeSimple);
-        EventSimpleEntity eventSimple = toSimpleEntity(event);
-        OrganizerSimpleEntity organizerSimple = createOrganizer(employeeSimple, eventSimple);
-        organizerSimple.setAssistantRole();
+        checkEmployeeExistsInAnEventAsOrganizer(employeeId, event.getOrganizers());
+        checkEmployeeExistsInAnEventAsParticipant(employeeId, event.getParticipants());
+        EmployeeSimpleEntity employeeSimple = employeeService.getEmployeeSimpleEntityById(employeeId);
+        EventSimpleEntity eventSimple = EventSimpleEntity.toSimpleEntity(event);
+        OrganizerSimpleEntity organizerSimple = organizerService.createOrganizer(employeeSimple, eventSimple, ASSISTANT);
         event.getOrganizers().add(organizerSimple);
         eventRepository.save(event);
-        log.info("Add employee {} {} to {} as organizer with role {}", employeeSimple.getName(),
-                employeeSimple.getSurname(), eventSimple.getEventName(), organizerSimple.getRole());
-    }
-
-    private OrganizerSimpleEntity createOrganizer(EmployeeSimpleEntity employee, EventSimpleEntity event) {
-        return organizerService.createOrganizer(employee, event);
     }
 
     @Override
-    public void addEmployeeToEventAsParticipant(long eventId, long employeeId) {
+    @Transactional
+    public void removeOrganizerFromEvent(long mainOrganizerId, long employeeId, long eventId) {
         EventEntity event = getEventEntityById(eventId);
-        checkListOfParticipantsSize(event);
-        EmployeeSimpleEntity employeeSimple = employeeService.getWorkingEmployeeSimpleEntityById(employeeId);
-        checkEmployeeExistInEventAndThrowExceptionIfIs(event,employeeSimple);
-        EventSimpleEntity eventSimple = toSimpleEntity(event);
+        List<OrganizerSimpleEntity> organizers = event.getOrganizers();
+        List<ParticipantSimpleEntity> participants = event.getParticipants();
+        checkEmployees(mainOrganizerId, employeeId, organizers, participants);
+        Iterator<OrganizerSimpleEntity> iterator = event.getOrganizers().iterator();
+        while (iterator.hasNext()) {
+            OrganizerSimpleEntity organizer = iterator.next();
+            if (organizer.getEmployee().getId() == employeeId) {
+                iterator.remove();
+                organizerService.removeByEventAndEmployee(eventId, employeeId);
+            }
+        }
+    }
+
+
+    @Override
+    @Transactional
+    public void addEmployeeAsParticipant(long eventId, long employeeId) {
+        EventEntity event = getEventEntityById(eventId);
+        checkCurrentParticipantNumberAndThrowExceptionIfItIsReached(event);
+        checkEmployeeExistsInAnEventAsOrganizer(employeeId, event.getOrganizers());
+        checkEmployeeExistsInAnEventAsParticipant(employeeId, event.getParticipants());
+        EmployeeSimpleEntity employeeSimple = employeeService.getEmployeeSimpleEntityById(employeeId);
+        EventSimpleEntity eventSimple = EventSimpleEntity.toSimpleEntity(event);
         ParticipantSimpleEntity participantSimple = participantService.createParticipant(employeeSimple, eventSimple);
         event.getParticipants().add(participantSimple);
         eventRepository.save(event);
-        log.info("Add employee {} {} to {} as participant", employeeSimple.getName(), employeeSimple.getSurname(),
-                eventSimple.getEventName());
+    }
+
+    private void checkCurrentParticipantNumberAndThrowExceptionIfItIsReached(EventEntity event) {
+        if (event.getLimitOfParticipants().equals(event.getCurrentParticipantsNumber())) {
+            log.error("You can't sign up for an event. The number of participant has already been reached");
+            throw new ParticipantException("You can't sign up for an event. " +
+                    "The number of participant has already been reached");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeParticipantFromEvent(long eventId, long employeeId) {
+        EventEntity event = getEventEntityById(eventId);
+        Iterator<ParticipantSimpleEntity> iterator = event.getParticipants().iterator();
+        while (iterator.hasNext()) {
+            ParticipantSimpleEntity participant = iterator.next();
+            if (participant.getEmployee().getId() == employeeId) {
+                iterator.remove();
+                participantService.removeByEventAndEmployee(eventId, employeeId);
+            }
+        }
+    }
+
+    private void checkEmployees(long mainOrganizerId, long employeeId, List<OrganizerSimpleEntity> organizers,
+                                List<ParticipantSimpleEntity> participants) {
+        checkMainOrganizerIsCorrect(mainOrganizerId, organizers);
+        checkEmployeeExistsInAnEventAsParticipant(employeeId, participants);
+    }
+
+    private void checkEmployeeExistsInAnEventAsParticipant(long employeeId, List<ParticipantSimpleEntity> participants) {
+        participants.forEach(participant -> {
+            if (participant.getEmployee().getId() == employeeId) {
+                throw new ParticipantException("Employee already exists in an event as participant");
+            }
+        });
+    }
+
+    private void checkEmployeeExistsInAnEventAsOrganizer(long employeeId, List<OrganizerSimpleEntity> organizers) {
+        organizers.forEach(organizer -> {
+            if (organizer.getEmployee().getId() == employeeId) {
+                throw new OrganizerException("Organizer already exists in an event");
+            }
+        });
+    }
+
+    private void checkMainOrganizerIsCorrect(long mainOrganizerId, List<OrganizerSimpleEntity> organizers) {
+        List<OrganizerSimpleEntity> mainOrganizers = organizers
+                .stream()
+                .filter(organizer -> organizer.getEmployee().getId() == mainOrganizerId)
+                .toList();
+        if (mainOrganizers.isEmpty()) {
+            throw new OrganizerException("You dont have permission to remove organizer from an event");
+        }
     }
 
     private EventEntity getEventEntityById(long eventId) {
         return eventRepository.findById(eventId)
-                .orElseThrow(() -> getEntityNotFoundException(eventId));
-    }
-
-    private void checkEmployeeExistInEventAndThrowExceptionIfIs(EventEntity event, EmployeeSimpleEntity employee) {
-        checkEmployeeExistInEventAsParticipant(event, employee);
-        checkEmployeeExistInEventAsOrganizer(event, employee);
-    }
-
-    private void checkEmployeeExistInEventAsParticipant(EventEntity event, EmployeeSimpleEntity employee) {
-        if (isExistAsParticipant(event, employee)) {
-            throw new ParticipantException("Employee is already exist in event as participant");
-        }
-    }
-
-    private void checkEmployeeExistInEventAsOrganizer(EventEntity event, EmployeeSimpleEntity employee) {
-        if (isExistAsOrganizer(event, employee)) {
-            throw new ParticipantException("Employee is already exist in event as organizer");
-        }
-    }
-
-    private boolean isExistAsOrganizer(EventEntity event, EmployeeSimpleEntity employee) {
-        return event.getOrganizers()
-                .stream()
-                .map(OrganizerSimpleEntity::getId).toList()
-                .contains(employee.getId());
-    }
-
-    private boolean isExistAsParticipant(EventEntity event, EmployeeSimpleEntity employee) {
-        return event.getParticipants()
-                .stream()
-                .map(ParticipantSimpleEntity::getId).toList()
-                .contains(employee.getId());
-    }
-
-    private void checkListOfParticipantsSize(EventEntity event) {
-        if (event.getParticipants().size() >= event.getLimitOfParticipants()) {
-            throwParticipantsLimitExceptionException(event.getId());
-        }
-    }
-
-    private EntityException getEntityNotFoundException(long eventId) {
-        throwEntityNotFoundException(eventId);
-        return null;
-    }
-
-    private void throwEntityNotFoundException(long eventId) {
-        log.error(EVENT_NOT_FOUND_LOG_ERROR_MESSAGE, eventId);
-        throw new EntityException(EVENT_NOT_FOUND_MESSAGE);
-    }
-
-    private void throwParticipantsLimitExceptionException(long eventId) {
-        log.error(EVENT_NOT_FOUND_LOG_ERROR_MESSAGE, eventId);
-        throw new ParticipantException("Unable to sign up for the event. The limit of event participants has already " +
-                "been reached");
+                .orElseThrow(() -> {
+                    log.error("Event with id -> {} not found", eventId);
+                    throw new EntityNotFoundException(EVENT_NOT_FOUND_MESSAGE);
+                });
     }
 }

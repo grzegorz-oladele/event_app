@@ -34,13 +34,23 @@ class EventController {
         eventService.editEventById(mainOrganizerId, eventId, eventDto);
     }
 
-    @PatchMapping("/{eventId}/employees/{mainOrganizerId}")
-    void addEmployeeToEventAsOrganizer(@PathVariable long eventId, @PathVariable long mainOrganizerId) {
-        eventService.addEmployeeToEventAsOrganizer(eventId, mainOrganizerId);
+    @PatchMapping("/{eventId}/organizers/{organizerId}/employees/{employeeId}/add")
+    void addEmployeeToEventAsOrganizer(@PathVariable long eventId, @PathVariable long organizerId, @PathVariable long employeeId) {
+        eventService.addEmployeeAsOrganizer(organizerId, employeeId, eventId);
     }
 
-    @PatchMapping("/{eventId}/employees/{mainOrganizerId}")
-    void addEmployeeToEventAsOrganizer(@PathVariable long eventId, @PathVariable long mainOrganizerId) {
-        eventService.addEmployeeToEventAsOrganizer(eventId, mainOrganizerId);
+    @PatchMapping("/{eventId}/organizers/{organizerId}/employees/{employeeId}/remove")
+    void removeOrganizerFromAnEvent(@PathVariable long eventId, @PathVariable long organizerId, @PathVariable long employeeId) {
+        eventService.removeOrganizerFromEvent(organizerId, employeeId, eventId);
+    }
+
+    @PatchMapping("/{eventId}/employees/{employeeId}/add")
+    void addEmployeeToEventAsParticipant(@PathVariable long eventId, @PathVariable long employeeId) {
+        eventService.addEmployeeAsParticipant(eventId, employeeId);
+    }
+
+    @PatchMapping("/{eventId}/employees/{employeeId}/remove")
+    void removeOrganizerFromAnEvent(@PathVariable long eventId, @PathVariable long employeeId) {
+        eventService.removeParticipantFromEvent(eventId, employeeId);
     }
 }

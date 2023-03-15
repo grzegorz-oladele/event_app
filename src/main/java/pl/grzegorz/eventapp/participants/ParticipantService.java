@@ -5,5 +5,7 @@ import pl.grzegorz.eventapp.events.EventSimpleEntity;
 
 public interface ParticipantService {
 
-    ParticipantSimpleEntity createParticipant(EmployeeSimpleEntity employee, EventSimpleEntity event);
+    ParticipantSimpleEntity createParticipant(EmployeeSimpleEntity employeeSimple, EventSimpleEntity eventSimple);
+
+    void removeByEventAndEmployee(long eventId, long employeeId);
 }

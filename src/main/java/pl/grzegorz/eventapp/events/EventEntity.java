@@ -2,11 +2,12 @@ package pl.grzegorz.eventapp.events;
 
 import lombok.*;
 import pl.grzegorz.eventapp.events.dto.input.EventDto;
-import pl.grzegorz.eventapp.participants.ParticipantSimpleEntity;
 import pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity;
+import pl.grzegorz.eventapp.participants.ParticipantSimpleEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.LocalDateTime.parse;
@@ -42,6 +43,9 @@ class EventEntity {
                 .withStartEventTime(parse(eventDto.getStartEventTime()))
                 .withEndEventTime(parse(eventDto.getEndEventTime()))
                 .withLimitOfParticipants(eventDto.getLimitOfParticipant())
+                .withCurrentParticipantsNumber(0)
+                .withOrganizers(new ArrayList<>())
+                .withParticipants(new ArrayList<>())
                 .build();
     }
 }

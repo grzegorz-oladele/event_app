@@ -14,13 +14,13 @@ public interface EmployeeService {
 
     EmployeeOutputDto getParticipantById(long participantId);
 
-    EmployeeSimpleEntity getWorkingEmployeeSimpleEntityById(long employeeId);
+    EmployeeSimpleEntity getEmployeeSimpleEntityById(long employeeId);
 
     void createEmployee(EmployeeDto employeeDto);
 
-    void editParticipant(long participantId, EmployeeDto employeeDto);
+    void editEmployee(long participantId, EmployeeDto employeeDto);
 
-    void setParticipantAsUnemployed(EmployeeEndOfWorkDto employeeEndOfWorkDto);
+    void setEmployeeAsUnemployed(EmployeeEndOfWorkDto employeeEndOfWorkDto);
 
-    void removeParticipant(long participantId);
+    void removeEmployee(long participantId);
 }

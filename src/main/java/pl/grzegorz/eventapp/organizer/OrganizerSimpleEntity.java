@@ -1,15 +1,15 @@
 package pl.grzegorz.eventapp.organizer;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import pl.grzegorz.eventapp.employees.EmployeeSimpleEntity;
-import pl.grzegorz.eventapp.events.EventSimpleEntity;
-import pl.grzegorz.eventapp.organizer.EventRole;
 
 import javax.persistence.*;
 
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
-import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
 
 @Entity
 @Table(name = "organizers")
@@ -24,21 +24,11 @@ public class OrganizerSimpleEntity {
     private Long id;
     @OneToOne
     private EmployeeSimpleEntity employee;
-    @OneToOne
-    private EventSimpleEntity event;
-    @Enumerated(value = EnumType.STRING)
-    private EventRole role;
 
-    public void setAssistantRole() {
-        this.role = ASSISTANT;
-    }
-
-    public static OrganizerSimpleEntity toSimpleEntity(OrganizerEntity organizer) {
+    static OrganizerSimpleEntity toSimpleEntity(OrganizerEntity organizer) {
         return OrganizerSimpleEntity.builder()
                 .withId(organizer.getId())
                 .withEmployee(organizer.getEmployee())
-                .withEvent(organizer.getEvent())
-                .withRole(organizer.getRole())
                 .build();
     }
 }

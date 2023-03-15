@@ -15,6 +15,11 @@ public interface EventService {
 
     void editEventById(long mainOrganizerId, long eventId, EventDto eventDto);
 
-    void addEmployeeToEventAsOrganizer(long eventId, long mainOrganizerId, long employeeId);
-    void addEmployeeToEventAsParticipant(long eventId, long mainOrganizerId, long employeeId);
+    void addEmployeeAsOrganizer(long mainOrganizerId, long employeeId, long eventId);
+
+    void removeOrganizerFromEvent(long mainOrganizerId, long employeeId, long eventId);
+
+    void addEmployeeAsParticipant(long eventId, long employeeId);
+
+    void removeParticipantFromEvent(long eventId, long employeeId);
 }

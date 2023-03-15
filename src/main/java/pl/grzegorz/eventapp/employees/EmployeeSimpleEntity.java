@@ -1,6 +1,6 @@
 package pl.grzegorz.eventapp.employees;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,10 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import static javax.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
-@Table(name = "participants")
+@Table(name = "employees")
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PRIVATE)
 @Getter
+@Builder(access = PRIVATE, setterPrefix = "with")
 public class EmployeeSimpleEntity {
 
     @Id
@@ -20,6 +25,13 @@ public class EmployeeSimpleEntity {
     private String name;
     private String surname;
     private String email;
-    private String department;
-    private Boolean isEmployed;
+
+    public static EmployeeSimpleEntity toSimpleEntity(EmployeeEntity employee) {
+        return EmployeeSimpleEntity.builder()
+                .withId(employee.getId())
+                .withName(employee.getName())
+                .withSurname(employee.getSurname())
+                .withEmail(employee.getEmail())
+                .build();
+    }
 }

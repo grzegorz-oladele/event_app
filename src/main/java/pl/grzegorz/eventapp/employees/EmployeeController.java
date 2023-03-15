@@ -37,16 +37,16 @@ class EmployeeController {
 
     @PatchMapping("/{employeeId}")
     void editEmployeeById(@PathVariable long employeeId, @RequestBody EmployeeDto employeeDto) {
-        employeeService.editParticipant(employeeId, employeeDto);
+        employeeService.editEmployee(employeeId, employeeDto);
     }
 
     @PatchMapping("/exemptions")
     void markEmployeeAsUnemployed(@RequestBody EmployeeEndOfWorkDto employeeEndOfWorkDto) {
-        employeeService.setParticipantAsUnemployed(employeeEndOfWorkDto);
+        employeeService.setEmployeeAsUnemployed(employeeEndOfWorkDto);
     }
 
     @DeleteMapping("/{employeeId}")
     void permanentRemoveEmployee(@PathVariable long employeeId) {
-        employeeService.removeParticipant(employeeId);
+        employeeService.removeEmployee(employeeId);
     }
 }

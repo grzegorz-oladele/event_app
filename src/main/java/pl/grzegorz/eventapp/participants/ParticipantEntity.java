@@ -11,7 +11,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
-@Table(name = "members")
+@Table(name = "participants")
 @Getter(value = PROTECTED)
 @Setter(value = PROTECTED)
 @NoArgsConstructor(access = PROTECTED)

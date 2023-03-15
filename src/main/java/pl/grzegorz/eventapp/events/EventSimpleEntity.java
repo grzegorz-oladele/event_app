@@ -1,37 +1,34 @@
 package pl.grzegorz.eventapp.events;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Table(name = "events")
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PRIVATE)
+@AllArgsConstructor
 @Builder(access = PRIVATE, setterPrefix = "with")
 public class EventSimpleEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    private String eventName;
-    private LocalDateTime startEventTime;
-    private LocalDateTime endEventTime;
 
-    public static EventSimpleEntity toSimpleEntity(EventEntity event) {
+    static EventSimpleEntity toSimpleEntity(EventEntity event) {
         return EventSimpleEntity.builder()
                 .withId(event.getId())
-                .withEventName(event.getEventName())
-                .withStartEventTime(event.getStartEventTime())
-                .withEndEventTime(event.getEndEventTime())
                 .build();
     }
 }
