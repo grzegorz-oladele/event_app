@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface EmployeeService {
 
-    List<EmployeeOutputDto> getAllParticipants();
+    List<EmployeeOutputDto> getAllEmployees();
 
-    List<EmployeeOutputDto> getAllEmployedParticipants();
+    List<EmployeeOutputDto> getAllHiredEmployees();
 
-    EmployeeOutputDto getParticipantById(long participantId);
+    EmployeeOutputDto getEmployeeById(long participantId);
 
     EmployeeSimpleEntity getEmployeeSimpleEntityById(long employeeId);
 

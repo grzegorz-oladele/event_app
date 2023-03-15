@@ -27,21 +27,21 @@ class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Override
-    public List<EmployeeOutputDto> getAllParticipants() {
+    public List<EmployeeOutputDto> getAllEmployees() {
         List<EmployeeOutputDto> participants = employeeRepository.findAllBy();
         log.info(EMPLOYEE_RETURN_LIST_LOG_ERROR_MESSAGE, participants.size());
         return participants;
     }
 
     @Override
-    public List<EmployeeOutputDto> getAllEmployedParticipants() {
+    public List<EmployeeOutputDto> getAllHiredEmployees() {
         List<EmployeeOutputDto> employedParticipants = employeeRepository.findAllEmployedEmployees();
         log.info(EMPLOYEE_RETURN_LIST_LOG_ERROR_MESSAGE, employedParticipants.size());
         return employedParticipants;
     }
 
     @Override
-    public EmployeeOutputDto getParticipantById(long employeeId) {
+    public EmployeeOutputDto getEmployeeById(long employeeId) {
         return employeeRepository.findAllById(employeeId)
                 .orElseThrow(() -> {
                     log.error(EMPLOYEE_NOT_FOUND_LOG_ERROR_MESSAGE, employeeId);

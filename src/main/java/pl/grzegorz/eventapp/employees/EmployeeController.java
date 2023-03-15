@@ -17,17 +17,17 @@ class EmployeeController {
 
     @GetMapping
     List<EmployeeOutputDto> getAllEmployees() {
-        return employeeService.getAllParticipants();
+        return employeeService.getAllEmployees();
     }
 
     @GetMapping("/working")
     List<EmployeeOutputDto> getAllWorkingEmployees() {
-        return employeeService.getAllEmployedParticipants();
+        return employeeService.getAllHiredEmployees();
     }
 
     @GetMapping("/{employeeId}")
     EmployeeOutputDto getEmployeeById(@PathVariable long employeeId) {
-        return employeeService.getParticipantById(employeeId);
+        return employeeService.getEmployeeById(employeeId);
     }
 
     @PostMapping
