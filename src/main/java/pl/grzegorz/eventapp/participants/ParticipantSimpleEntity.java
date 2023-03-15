@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
-@Table(name = "members")
+@Table(name = "participants")
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor

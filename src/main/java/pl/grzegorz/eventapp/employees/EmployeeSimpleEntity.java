@@ -25,6 +25,7 @@ public class EmployeeSimpleEntity {
     private String name;
     private String surname;
     private String email;
+    private String department;
 
     public static EmployeeSimpleEntity toSimpleEntity(EmployeeEntity employee) {
         return EmployeeSimpleEntity.builder()

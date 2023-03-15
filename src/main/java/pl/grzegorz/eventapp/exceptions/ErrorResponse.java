@@ -5,12 +5,14 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Builder(setterPrefix = "with")
-@AllArgsConstructor(access = PRIVATE)
-@Getter(value = PRIVATE)
-@Setter(value = PRIVATE)
-class ErrorResponse {
+public class ErrorResponse {
 
     private String message;
     private LocalDateTime timestamp;

@@ -24,6 +24,8 @@ public class OrganizerSimpleEntity {
     private Long id;
     @OneToOne
     private EmployeeSimpleEntity employee;
+    @Enumerated(value = EnumType.STRING)
+    private EventRole role;
 
     static OrganizerSimpleEntity toSimpleEntity(OrganizerEntity organizer) {
         return OrganizerSimpleEntity.builder()

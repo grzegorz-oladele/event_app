@@ -119,11 +119,12 @@ class EventServiceImpl implements EventService {
         EventSimpleEntity eventSimple = EventSimpleEntity.toSimpleEntity(event);
         ParticipantSimpleEntity participantSimple = participantService.createParticipant(employeeSimple, eventSimple);
         event.getParticipants().add(participantSimple);
+        event.setCurrentParticipantsNumber(event.getCurrentParticipantsNumber() + 1);
         eventRepository.save(event);
     }
 
     private void checkCurrentParticipantNumberAndThrowExceptionIfItIsReached(EventEntity event) {
-        if (event.getLimitOfParticipants().equals(event.getCurrentParticipantsNumber())) {
+        if (event.getLimitOfParticipants() == (event.getCurrentParticipantsNumber())) {
             log.error("You can't sign up for an event. The number of participant has already been reached");
             throw new ParticipantException("You can't sign up for an event. " +
                     "The number of participant has already been reached");

@@ -30,8 +30,8 @@ class EventEntity {
     private String eventName;
     private LocalDateTime startEventTime;
     private LocalDateTime endEventTime;
-    private Integer limitOfParticipants;
-    private Integer currentParticipantsNumber;
+    private int limitOfParticipants;
+    private int currentParticipantsNumber;
     @ManyToMany
     private List<OrganizerSimpleEntity> organizers;
     @ManyToMany
