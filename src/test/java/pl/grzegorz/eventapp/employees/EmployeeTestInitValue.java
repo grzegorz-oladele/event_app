@@ -14,7 +14,7 @@ import static java.util.Arrays.asList;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
-class EmployeeTestInitValue {
+public class EmployeeTestInitValue {
 
     static List<EmployeeOutputDto> getAllEmployeeDtoOutputList() {
         TestEmployeeOutputDto firstEmployee = TestEmployeeOutputDto.builder()
@@ -87,6 +87,16 @@ class EmployeeTestInitValue {
                 .withEmail("paweł@pawłowski.pl")
                 .withDepartment("DEVELOPER")
                 .withDateOfStartingWork("2022-01-01")
+                .build();
+    }
+
+    public static EmployeeSimpleEntity getEmployeeSimpleEntity() {
+        return EmployeeSimpleEntity.builder()
+                .withId(1L)
+                .withName("Tomasz")
+                .withSurname("Tomaszewski")
+                .withEmail("tomasz@tomaszewski.pl")
+                .withDepartment("DEVELOPER")
                 .build();
     }
 

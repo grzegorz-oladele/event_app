@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Getter
-@Builder(access = PRIVATE, setterPrefix = "with")
+@Builder(access = PROTECTED, setterPrefix = "with")
 public class EmployeeSimpleEntity {
 
     @Id
