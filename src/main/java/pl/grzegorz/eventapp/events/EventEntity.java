@@ -21,7 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter(value = PROTECTED)
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@Builder(access = PRIVATE, setterPrefix = "with")
+@Builder(access = PROTECTED, setterPrefix = "with")
 class EventEntity {
 
     @Id

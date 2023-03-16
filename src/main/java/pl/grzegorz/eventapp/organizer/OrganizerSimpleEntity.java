@@ -8,15 +8,14 @@ import pl.grzegorz.eventapp.employees.EmployeeSimpleEntity;
 
 import javax.persistence.*;
 
-import static lombok.AccessLevel.PRIVATE;
-import static lombok.AccessLevel.PROTECTED;
+import static lombok.AccessLevel.*;
 
 @Entity
 @Table(name = "organizers")
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@Builder(access = PRIVATE, setterPrefix = "with")
+@Builder(access = PROTECTED, setterPrefix = "with")
 public class OrganizerSimpleEntity {
 
     @Id

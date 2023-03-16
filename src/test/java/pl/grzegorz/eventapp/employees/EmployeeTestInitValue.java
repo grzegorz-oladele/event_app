@@ -2,6 +2,7 @@ package pl.grzegorz.eventapp.employees;
 
 import lombok.*;
 import pl.grzegorz.eventapp.employees.dto.input.EmployeeDto;
+import pl.grzegorz.eventapp.employees.dto.output.EmployeeInEventOutputDto;
 import pl.grzegorz.eventapp.employees.dto.output.EmployeeOutputDto;
 
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ import static lombok.AccessLevel.PRIVATE;
 public class EmployeeTestInitValue {
 
     static List<EmployeeOutputDto> getAllEmployeeDtoOutputList() {
-        TestEmployeeOutputDto firstEmployee = TestEmployeeOutputDto.builder()
+        EmployeeTestOutputDto firstEmployee = EmployeeTestOutputDto.builder()
                 .withId(1L)
                 .withName("Tomasz")
                 .withSurname("Tomaszewski")
@@ -28,7 +29,7 @@ public class EmployeeTestInitValue {
                 .withIsEmployed(TRUE)
                 .build();
 
-        TestEmployeeOutputDto secondEmployee = TestEmployeeOutputDto.builder()
+        EmployeeTestOutputDto secondEmployee = EmployeeTestOutputDto.builder()
                 .withId(2L)
                 .withName("Łukasz")
                 .withSurname("Łukaszewski")
@@ -39,7 +40,7 @@ public class EmployeeTestInitValue {
                 .withIsEmployed(FALSE)
                 .build();
 
-        TestEmployeeOutputDto thirdEmployee = TestEmployeeOutputDto.builder()
+        EmployeeTestOutputDto thirdEmployee = EmployeeTestOutputDto.builder()
                 .withId(3L)
                 .withName("Bartosz")
                 .withSurname("Bartoszewski")
@@ -50,7 +51,7 @@ public class EmployeeTestInitValue {
                 .withIsEmployed(TRUE)
                 .build();
 
-        TestEmployeeOutputDto fourthEmployee = TestEmployeeOutputDto.builder()
+        EmployeeTestOutputDto fourthEmployee = EmployeeTestOutputDto.builder()
                 .withId(4L)
                 .withName("Michał")
                 .withSurname("Michałowski")
@@ -100,10 +101,60 @@ public class EmployeeTestInitValue {
                 .build();
     }
 
+    public static EmployeeSimpleEntity getSecondEmployeeSimpleEntity() {
+        return EmployeeSimpleEntity.builder()
+                .withId(2L)
+                .withName("Marcin")
+                .withSurname("Marcinkowski")
+                .withEmail("marcin@marcinkowski.pl")
+                .withDepartment("ANALYST")
+                .build();
+    }
+
+    public static EmployeeInEventOutputDto getMainOrganizer() {
+        return EmployeeInEventTestDtoOutput.builder()
+                .withId(1L)
+                .withName("Tomasz")
+                .withSurname("Tomaszewski")
+                .withEmail("tomasz@tomaszewski.pl")
+                .withDepartment("DEVELOPER")
+                .build();
+    }
+
+    public static EmployeeInEventOutputDto getAssistantOutputDto() {
+        return EmployeeInEventTestDtoOutput.builder()
+                .withId(2L)
+                .withName("Paweł")
+                .withSurname("Pawłowski")
+                .withEmail("pawel@pawlowski.pl")
+                .withDepartment("DEVELOPER")
+                .build();
+    }
+
+    public static EmployeeInEventOutputDto getFirstParticipant() {
+        return EmployeeInEventTestDtoOutput.builder()
+                .withId(3L)
+                .withName("Bartosz")
+                .withSurname("Bartoszewski")
+                .withEmail("bartosz@bartoszewski.pl")
+                .withDepartment("DEVOPS")
+                .build();
+    }
+
+    public static EmployeeInEventOutputDto getSecondParticipant() {
+        return EmployeeInEventTestDtoOutput.builder()
+                .withId(4L)
+                .withName("Michał")
+                .withSurname("Michałowski")
+                .withEmail("michal@michalowski.pl")
+                .withDepartment("PROJECT-MANAGER")
+                .build();
+    }
+
     @Getter
     @AllArgsConstructor
     @Builder(setterPrefix = "with")
-    private static class TestEmployeeOutputDto implements EmployeeOutputDto {
+    private static class EmployeeTestOutputDto implements EmployeeOutputDto {
 
         private Long id;
         private String name;
@@ -113,5 +164,17 @@ public class EmployeeTestInitValue {
         private LocalDate dateOfStartingWork;
         private LocalDate dateOfEndingWork;
         private Boolean isEmployed;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder(setterPrefix = "with")
+    public static class EmployeeInEventTestDtoOutput implements EmployeeInEventOutputDto {
+
+        private Long id;
+        private String name;
+        private String surname;
+        private String email;
+        private String department;
     }
 }

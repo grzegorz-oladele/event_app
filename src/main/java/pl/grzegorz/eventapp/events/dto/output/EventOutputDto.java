@@ -1,6 +1,5 @@
 package pl.grzegorz.eventapp.events.dto.output;
 
-import pl.grzegorz.eventapp.employees.dto.output.EmployeeInEventOutputDto;
 import pl.grzegorz.eventapp.organizer.dto.OrganizerOutputDto;
 import pl.grzegorz.eventapp.participants.dto.output.ParticipantOutputDto;
 

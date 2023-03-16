@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static pl.grzegorz.eventapp.events.EventEntity.toEntity;
+import static pl.grzegorz.eventapp.events.EventSimpleEntity.*;
 import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
 import static pl.grzegorz.eventapp.organizer.EventRole.MAIN_ORGANIZER;
 
@@ -58,7 +59,7 @@ class EventServiceImpl implements EventService {
         EventEntity savedEvent = eventRepository.save(event);
         log.info("Create new event with id -> {}", savedEvent.getId());
         EmployeeSimpleEntity employeeSimple = employeeService.getEmployeeSimpleEntityById(employeeId);
-        EventSimpleEntity eventSimple = EventSimpleEntity.toSimpleEntity(savedEvent);
+        EventSimpleEntity eventSimple = toSimpleEntity(savedEvent);
         OrganizerSimpleEntity organizerSimple = organizerService.createOrganizer(employeeSimple, eventSimple, MAIN_ORGANIZER);
         savedEvent.getOrganizers().add(organizerSimple);
         eventRepository.save(savedEvent);
@@ -84,7 +85,7 @@ class EventServiceImpl implements EventService {
         checkEmployeeExistsInAnEventAsOrganizer(employeeId, event.getOrganizers());
         checkEmployeeExistsInAnEventAsParticipant(employeeId, event.getParticipants());
         EmployeeSimpleEntity employeeSimple = employeeService.getEmployeeSimpleEntityById(employeeId);
-        EventSimpleEntity eventSimple = EventSimpleEntity.toSimpleEntity(event);
+        EventSimpleEntity eventSimple = toSimpleEntity(event);
         OrganizerSimpleEntity organizerSimple = organizerService.createOrganizer(employeeSimple, eventSimple, ASSISTANT);
         event.getOrganizers().add(organizerSimple);
         eventRepository.save(event);
@@ -116,7 +117,7 @@ class EventServiceImpl implements EventService {
         checkEmployeeExistsInAnEventAsOrganizer(employeeId, event.getOrganizers());
         checkEmployeeExistsInAnEventAsParticipant(employeeId, event.getParticipants());
         EmployeeSimpleEntity employeeSimple = employeeService.getEmployeeSimpleEntityById(employeeId);
-        EventSimpleEntity eventSimple = EventSimpleEntity.toSimpleEntity(event);
+        EventSimpleEntity eventSimple = toSimpleEntity(event);
         ParticipantSimpleEntity participantSimple = participantService.createParticipant(employeeSimple, eventSimple);
         event.getParticipants().add(participantSimple);
         event.setCurrentParticipantsNumber(event.getCurrentParticipantsNumber() + 1);
