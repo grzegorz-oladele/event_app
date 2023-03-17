@@ -1,7 +1,6 @@
 package pl.grzegorz.eventapp.events;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,13 +21,15 @@ import java.util.List;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getSecondEmployeeSimpleEntity;
 import static pl.grzegorz.eventapp.events.EventTestInitValue.*;
 import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
 import static pl.grzegorz.eventapp.organizer.EventRole.MAIN_ORGANIZER;
-import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getAssistant;
+import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getAssistantOrganizerSimpleEntity;
+import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getOrganizerSimpleEntity;
 
 @ExtendWith(MockitoExtension.class)
 class EventServiceImplTest {
@@ -50,9 +51,7 @@ class EventServiceImplTest {
     private EmployeeSimpleEntity employeeSimpleEntity;
     private EventSimpleEntity eventSimpleEntity;
     private OrganizerSimpleEntity organizerSimpleEntity;
-
-    private final long eventId = 2;
-    private final long mainOrganizerId = 1;
+    private final long eventId = 1;
     private final long employeeId = 2;
 
     @BeforeEach
@@ -62,7 +61,7 @@ class EventServiceImplTest {
         eventEntity = getEventEntity();
         employeeSimpleEntity = getSecondEmployeeSimpleEntity();
         eventSimpleEntity = getEventSimpleEntity();
-        organizerSimpleEntity = getAssistant();
+        organizerSimpleEntity = getOrganizerSimpleEntity();
     }
 
     @Test
@@ -201,7 +200,7 @@ class EventServiceImplTest {
         when(organizerService.createOrganizer(employeeSimpleEntity, eventSimpleEntity, ASSISTANT))
                 .thenReturn(organizerSimpleEntity);
 //        when
-        eventService.addEmployeeAsOrganizer(mainOrganizerId, employeeId, eventId);
+        eventService.addEmployeeAsOrganizer(anyLong(), employeeId, eventId);
 //        then
         verify(eventRepository).save(any(EventEntity.class));
     }

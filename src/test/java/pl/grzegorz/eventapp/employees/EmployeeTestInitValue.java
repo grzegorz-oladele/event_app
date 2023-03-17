@@ -68,7 +68,7 @@ public class EmployeeTestInitValue {
         return asList(getAllEmployeeDtoOutputList().get(0), getAllEmployeeDtoOutputList().get(2));
     }
 
-    static EmployeeEntity getEmployeeEntity() {
+    static EmployeeEntity getFirstEmployeeEntity() {
         return EmployeeEntity.builder()
                 .withId(1L)
                 .withName("Tomasz")
@@ -79,6 +79,20 @@ public class EmployeeTestInitValue {
                 .withDateOfEndingWork(null)
                 .withIsEmployed(TRUE)
                 .build();
+    }
+
+    static EmployeeEntity getSecondEmployeeEntity() {
+        return EmployeeEntity.builder()
+                .withId(2L)
+                .withName("Michał")
+                .withSurname("Michałowski")
+                .withEmail("michal@michalowski.pl")
+                .withDepartment("PROJECT-MANAGER")
+                .withDateOfStartingWork(parse("2022-05-01"))
+                .withDateOfEndingWork(null)
+                .withIsEmployed(FALSE)
+                .build();
+
     }
 
     static EmployeeDto getEmployeeDto() {

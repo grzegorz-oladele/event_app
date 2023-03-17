@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.grzegorz.eventapp.events.dto.input.EventDto;
 import pl.grzegorz.eventapp.events.dto.output.EventOutputDto;
+import pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity;
 import pl.grzegorz.eventapp.organizer.dto.OrganizerOutputDto;
 import pl.grzegorz.eventapp.participants.dto.output.ParticipantOutputDto;
 
@@ -14,9 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.LocalDateTime.parse;
-import static java.util.Collections.singletonList;
 import static lombok.AccessLevel.PRIVATE;
-import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getMainOrganizer;
+import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getOrganizerSimpleEntity;
 import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getOrganizers;
 import static pl.grzegorz.eventapp.participants.ParticipantTestInitValue.getParticipants;
 
@@ -49,19 +49,6 @@ public class EventTestInitValue {
                 .build();
     }
 
-    static EventEntity getEventEntity() {
-        return EventEntity.builder()
-                .withId(2L)
-                .withEventName("Gildia Devops")
-                .withStartEventTime(LocalDateTime.parse("2023-03-10T10:00"))
-                .withEndEventTime(LocalDateTime.parse("2023-04-10T13:00"))
-                .withLimitOfParticipants(3)
-                .withCurrentParticipantsNumber(0)
-                .withParticipants(new ArrayList<>())
-                .withOrganizers(singletonList(getMainOrganizer()))
-                .build();
-    }
-
     @Getter
     @AllArgsConstructor
     @Builder(setterPrefix = "with")
@@ -75,5 +62,20 @@ public class EventTestInitValue {
         private Integer currentParticipantsNumber;
         private List<ParticipantOutputDto> participants;
         private List<OrganizerOutputDto> organizers;
+    }
+
+    static EventEntity getEventEntity() {
+        List<OrganizerSimpleEntity> organizers = new ArrayList<>();
+        organizers.add(getOrganizerSimpleEntity());
+        return EventEntity.builder()
+                .withId(1L)
+                .withEventName("Gildia backend")
+                .withCurrentParticipantsNumber(0)
+                .withStartEventTime(parse("2023-03-17T12:00"))
+                .withEndEventTime(parse("2023-03-17T13:00"))
+                .withOrganizers(organizers)
+                .withParticipants(new ArrayList<>())
+                .withLimitOfParticipants(2)
+                .build();
     }
 }

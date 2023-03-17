@@ -13,6 +13,8 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static lombok.AccessLevel.PRIVATE;
 import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.*;
+import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getEmployeeSimpleEntity;
+import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getSecondEmployeeSimpleEntity;
 import static pl.grzegorz.eventapp.events.EventTestInitValue.getEventSimpleEntity;
 import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
 import static pl.grzegorz.eventapp.organizer.EventRole.MAIN_ORGANIZER;
@@ -41,7 +43,7 @@ public class OrganizerTestInitValue {
         return asList(mainOrganizer, assistant);
     }
 
-    public static OrganizerSimpleEntity getMainOrganizer() {
+    public static OrganizerSimpleEntity getOrganizerSimpleEntity() {
         return OrganizerSimpleEntity.builder()
                 .withId(1L)
                 .withEmployee(getEmployeeSimpleEntity())
@@ -49,7 +51,7 @@ public class OrganizerTestInitValue {
                 .build();
     }
 
-    public static OrganizerSimpleEntity getAssistant() {
+    public static OrganizerSimpleEntity getAssistantOrganizerSimpleEntity() {
         return OrganizerSimpleEntity.builder()
                 .withId(2L)
                 .withEmployee(getSecondEmployeeSimpleEntity())
