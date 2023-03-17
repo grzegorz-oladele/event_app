@@ -100,6 +100,16 @@ public class EmployeeTestInitValue {
                 .build();
     }
 
+    public static EmployeeSimpleEntity getSecondEmployeeSimpleEntity() {
+        return EmployeeSimpleEntity.builder()
+                .withId(2L)
+                .withName("Bartosz")
+                .withSurname("Bartoszewski")
+                .withEmail("bartosz@bartoszewski.pl")
+                .withDepartment("DEVELOPER")
+                .build();
+    }
+
     @Getter
     @AllArgsConstructor
     @Builder(setterPrefix = "with")

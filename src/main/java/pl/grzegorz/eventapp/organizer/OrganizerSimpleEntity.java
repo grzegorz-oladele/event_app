@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@Builder(access = PRIVATE, setterPrefix = "with")
+@Builder(setterPrefix = "with")
 public class OrganizerSimpleEntity {
 
     @Id
