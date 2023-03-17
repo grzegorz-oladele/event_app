@@ -22,13 +22,13 @@ import java.util.List;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getSecondEmployeeSimpleEntity;
 import static pl.grzegorz.eventapp.events.EventTestInitValue.*;
 import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
 import static pl.grzegorz.eventapp.organizer.EventRole.MAIN_ORGANIZER;
 import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getAssistant;
-import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getMainOrganizer;
 
 @ExtendWith(MockitoExtension.class)
 class EventServiceImplTest {
@@ -158,7 +158,6 @@ class EventServiceImplTest {
     }
 
     @Test
-    @Disabled
     void shouldCallSaveMethodFromTheEventRepositoryInterfaceWhenUserWillBeWantAddNewEventToTheDatabase() {
 //        given
         when(eventRepository.save(any(EventEntity.class))).thenReturn(eventEntity);
@@ -195,7 +194,6 @@ class EventServiceImplTest {
     }
 
     @Test
-    @Disabled
     void shouldCallSaveMethodFromEventRepositoryInterfaceWhenEventEntityAndEmployeeEntityWillBeExistsInTheDatabase() {
 //        given
         when(eventRepository.findById(eventId)).thenReturn(of(eventEntity));
