@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import pl.grzegorz.eventapp.AbstractIntegrationTest;
 import pl.grzegorz.eventapp.employees.dto.output.EmployeeOutputDto;
 
@@ -39,10 +38,4 @@ public class EmployeeControllerTest extends AbstractIntegrationTest {
         List<EmployeeOutputDto> employees = objectMapper.readValue(result, new TypeReference<>(){});
         System.out.println(employees);
     }
-
-
-
-
-
-
 }
