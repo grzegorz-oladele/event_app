@@ -41,7 +41,7 @@ class EmployeeServiceImplTest {
     void setup() {
         allEmployees = getAllEmployeeDtoOutputList();
         allHiredEmployees = getAllHiredEmployees();
-        employeeEntity = getEmployeeEntity();
+        employeeEntity = getFirstEmployeeEntity();
         employeeDto = getEmployeeDto();
     }
 
