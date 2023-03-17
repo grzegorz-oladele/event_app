@@ -2,10 +2,12 @@ package pl.grzegorz.eventapp.events;
 
 import lombok.*;
 import pl.grzegorz.eventapp.events.dto.input.EventDto;
-import pl.grzegorz.eventapp.employees.dto.simple_entity.EmployeeSimpleEntity;
+import pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity;
+import pl.grzegorz.eventapp.participants.ParticipantSimpleEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.LocalDateTime.parse;
@@ -19,7 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter(value = PROTECTED)
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@Builder(access = PRIVATE, setterPrefix = "with")
+@Builder(access = PROTECTED, setterPrefix = "with")
 class EventEntity {
 
     @Id
@@ -28,10 +30,12 @@ class EventEntity {
     private String eventName;
     private LocalDateTime startEventTime;
     private LocalDateTime endEventTime;
-    private Integer limitOfParticipants;
-    private Integer currentParticipantsNumber;
+    private int limitOfParticipants;
+    private int currentParticipantsNumber;
     @ManyToMany
-    private List<EmployeeSimpleEntity> participants;
+    private List<OrganizerSimpleEntity> organizers;
+    @ManyToMany
+    private List<ParticipantSimpleEntity> participants;
 
     static EventEntity toEntity(EventDto eventDto) {
         return EventEntity.builder()
@@ -39,6 +43,9 @@ class EventEntity {
                 .withStartEventTime(parse(eventDto.getStartEventTime()))
                 .withEndEventTime(parse(eventDto.getEndEventTime()))
                 .withLimitOfParticipants(eventDto.getLimitOfParticipant())
+                .withCurrentParticipantsNumber(0)
+                .withOrganizers(new ArrayList<>())
+                .withParticipants(new ArrayList<>())
                 .build();
     }
 }

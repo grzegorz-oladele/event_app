@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class EntityException extends RuntimeException {
+public class OrganizerException extends RuntimeException {
+
     private final String message;
 }

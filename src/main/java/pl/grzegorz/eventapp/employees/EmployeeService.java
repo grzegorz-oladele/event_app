@@ -3,25 +3,24 @@ package pl.grzegorz.eventapp.employees;
 import pl.grzegorz.eventapp.employees.dto.input.EmployeeEndOfWorkDto;
 import pl.grzegorz.eventapp.employees.dto.input.EmployeeDto;
 import pl.grzegorz.eventapp.employees.dto.output.EmployeeOutputDto;
-import pl.grzegorz.eventapp.employees.dto.simple_entity.EmployeeSimpleEntity;
 
 import java.util.List;
 
 public interface EmployeeService {
 
-    List<EmployeeOutputDto> getAllParticipants();
+    List<EmployeeOutputDto> getAllEmployees();
 
-    List<EmployeeOutputDto> getAllEmployedParticipants();
+    List<EmployeeOutputDto> getAllHiredEmployees();
 
-    EmployeeOutputDto getParticipantById(long participantId);
+    EmployeeOutputDto getEmployeeById(long participantId);
 
-    EmployeeSimpleEntity getWorkingEmployeeSimpleEntityById(long employeeId);
+    EmployeeSimpleEntity getEmployeeSimpleEntityById(long employeeId);
 
     void createEmployee(EmployeeDto employeeDto);
 
-    void editParticipant(long participantId, EmployeeDto employeeDto);
+    void editEmployee(long participantId, EmployeeDto employeeDto);
 
-    void setParticipantAsUnemployed(EmployeeEndOfWorkDto employeeEndOfWorkDto);
+    void setEmployeeAsUnemployed(EmployeeEndOfWorkDto employeeEndOfWorkDto);
 
-    void removeParticipant(long participantId);
+    void removeEmployee(long participantId);
 }

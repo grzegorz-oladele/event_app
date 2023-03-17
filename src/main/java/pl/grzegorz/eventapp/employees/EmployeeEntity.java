@@ -7,16 +7,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 import static java.lang.Boolean.TRUE;
-import static lombok.AccessLevel.PRIVATE;
-import static lombok.AccessLevel.PROTECTED;
+import static lombok.AccessLevel.*;
 
 @Entity
-@Table(name = "participants")
+@Table(name = "employees")
 @Getter(value = PROTECTED)
 @Setter(value = PROTECTED)
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
-@Builder(setterPrefix = "with", access = PRIVATE)
+@Builder(setterPrefix = "with", access = PROTECTED)
 class EmployeeEntity {
 
     @Id

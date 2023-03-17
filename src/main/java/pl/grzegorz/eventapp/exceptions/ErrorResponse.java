@@ -3,11 +3,16 @@ package pl.grzegorz.eventapp.exceptions;
 import lombok.*;
 
 import java.time.LocalDateTime;
-@Builder(setterPrefix = "with")
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+
+import static lombok.AccessLevel.PRIVATE;
+import static lombok.AccessLevel.PROTECTED;
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-class ErrorResponse {
+@Builder(setterPrefix = "with")
+public class ErrorResponse {
 
     private String message;
     private LocalDateTime timestamp;
