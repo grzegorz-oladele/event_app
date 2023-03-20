@@ -125,6 +125,26 @@ public class EmployeeTestInitValue {
                 .build();
     }
 
+    public static EmployeeSimpleEntity getThirdEmployeeSimpleEntity() {
+        return EmployeeSimpleEntity.builder()
+                .withId(3L)
+                .withName("Arkadiusz")
+                .withSurname("Jakubowski")
+                .withEmail("arkadiusz@jakubowski.pl")
+                .withDepartment("ANALYST")
+                .build();
+    }
+
+    public static EmployeeSimpleEntity getFourthEmployeeSimpleEntity() {
+        return EmployeeSimpleEntity.builder()
+                .withId(4L)
+                .withName("Mateusz")
+                .withSurname("Matuszczyk")
+                .withEmail("mateusz@matuszczyk.pl")
+                .withDepartment("ANALYST")
+                .build();
+    }
+
     public static EmployeeInEventOutputDto getMainOrganizer() {
         return EmployeeInEventTestDtoOutput.builder()
                 .withId(1L)
@@ -167,8 +187,10 @@ public class EmployeeTestInitValue {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
+    @Setter
     @Builder(setterPrefix = "with")
-    private static class EmployeeTestOutputDto implements EmployeeOutputDto {
+    public static class EmployeeTestOutputDto implements EmployeeOutputDto {
 
         private Long id;
         private String name;
@@ -182,6 +204,8 @@ public class EmployeeTestInitValue {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
+    @Setter
     @Builder(setterPrefix = "with")
     public static class EmployeeInEventTestDtoOutput implements EmployeeInEventOutputDto {
 

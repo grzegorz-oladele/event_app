@@ -68,8 +68,9 @@ class EventServiceImpl implements EventService {
     @Override
     public void editEventById(long mainOrganizerId, long eventId, EventDto eventDto) {
         EventEntity event = getEventEntityById(eventId);
-        List<ParticipantSimpleEntity> participants = event.getParticipants();
         List<OrganizerSimpleEntity> organizers = event.getOrganizers();
+        checkMainOrganizerIsCorrect(mainOrganizerId, organizers);
+        List<ParticipantSimpleEntity> participants = event.getParticipants();
         EventEntity editedEventEntity = toEntity(eventDto);
         editedEventEntity.getParticipants().addAll(participants);
         editedEventEntity.getOrganizers().addAll(organizers);
@@ -96,14 +97,15 @@ class EventServiceImpl implements EventService {
     public void removeOrganizerFromEvent(long mainOrganizerId, long employeeId, long eventId) {
         EventEntity event = getEventEntityById(eventId);
         List<OrganizerSimpleEntity> organizers = event.getOrganizers();
-        List<ParticipantSimpleEntity> participants = event.getParticipants();
-        checkEmployees(mainOrganizerId, employeeId, organizers, participants);
+        checkMainOrganizerIsCorrect(mainOrganizerId, organizers);
         Iterator<OrganizerSimpleEntity> iterator = event.getOrganizers().iterator();
         while (iterator.hasNext()) {
             OrganizerSimpleEntity organizer = iterator.next();
             if (organizer.getEmployee().getId() == employeeId) {
                 iterator.remove();
                 organizerService.removeByEventAndEmployee(eventId, employeeId);
+                event.setCurrentParticipantsNumber(event.getCurrentParticipantsNumber() - 1);
+                eventRepository.save(event);
             }
         }
     }
@@ -120,7 +122,7 @@ class EventServiceImpl implements EventService {
         EventSimpleEntity eventSimple = toSimpleEntity(event);
         ParticipantSimpleEntity participantSimple = participantService.createParticipant(employeeSimple, eventSimple);
         event.getParticipants().add(participantSimple);
-        event.setCurrentParticipantsNumber(event.getCurrentParticipantsNumber() + 1);
+        event.setCurrentParticipantsNumber(event.getParticipants().size());
         eventRepository.save(event);
     }
 
@@ -146,12 +148,6 @@ class EventServiceImpl implements EventService {
         }
     }
 
-    private void checkEmployees(long mainOrganizerId, long employeeId, List<OrganizerSimpleEntity> organizers,
-                                List<ParticipantSimpleEntity> participants) {
-        checkMainOrganizerIsCorrect(mainOrganizerId, organizers);
-        checkEmployeeExistsInAnEventAsParticipant(employeeId, participants);
-    }
-
     private void checkEmployeeExistsInAnEventAsParticipant(long employeeId, List<ParticipantSimpleEntity> participants) {
         participants.forEach(participant -> {
             if (participant.getEmployee().getId() == employeeId) {
@@ -163,7 +159,7 @@ class EventServiceImpl implements EventService {
     private void checkEmployeeExistsInAnEventAsOrganizer(long employeeId, List<OrganizerSimpleEntity> organizers) {
         organizers.forEach(organizer -> {
             if (organizer.getEmployee().getId() == employeeId) {
-                throw new OrganizerException("Organizer already exists in an event");
+                throw new OrganizerException("Organizer already exists in an event as organizer");
             }
         });
     }

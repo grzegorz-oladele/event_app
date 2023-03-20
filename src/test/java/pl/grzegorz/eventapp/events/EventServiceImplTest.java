@@ -10,6 +10,8 @@ import pl.grzegorz.eventapp.employees.EmployeeService;
 import pl.grzegorz.eventapp.employees.EmployeeSimpleEntity;
 import pl.grzegorz.eventapp.events.dto.input.EventDto;
 import pl.grzegorz.eventapp.events.dto.output.EventOutputDto;
+import pl.grzegorz.eventapp.exceptions.OrganizerException;
+import pl.grzegorz.eventapp.exceptions.ParticipantException;
 import pl.grzegorz.eventapp.organizer.OrganizerService;
 import pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity;
 import pl.grzegorz.eventapp.participants.ParticipantService;
@@ -21,14 +23,13 @@ import java.util.List;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getFourthEmployeeSimpleEntity;
 import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getSecondEmployeeSimpleEntity;
 import static pl.grzegorz.eventapp.events.EventTestInitValue.*;
 import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
 import static pl.grzegorz.eventapp.organizer.EventRole.MAIN_ORGANIZER;
-import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getAssistantOrganizerSimpleEntity;
 import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getOrganizerSimpleEntity;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,18 +50,26 @@ class EventServiceImplTest {
     private EventDto eventDto;
     private EventEntity eventEntity;
     private EmployeeSimpleEntity employeeSimpleEntity;
+    private EmployeeSimpleEntity fourthEmployeeSimpleEntity;
     private EventSimpleEntity eventSimpleEntity;
     private OrganizerSimpleEntity organizerSimpleEntity;
+    private EventEntity eventEntityWithFullParticipants;
     private final long eventId = 1;
     private final long employeeId = 2;
+    private final long thirdEmployeeId = 3;
+    private final long fourthEmployeeId = 4;
+    private final long mainOrganizerId = 1;
+    private final long wrongMainOrganizerId = 8;
 
     @BeforeEach
     void setup() {
         eventOutputDto = getEventOutputDto();
         eventDto = getEventDto();
         eventEntity = getEventEntity();
-        employeeSimpleEntity = getSecondEmployeeSimpleEntity();
         eventSimpleEntity = getEventSimpleEntity();
+        eventEntityWithFullParticipants = getEventEntityWithFullParticipants();
+        employeeSimpleEntity = getSecondEmployeeSimpleEntity();
+        fourthEmployeeSimpleEntity = getFourthEmployeeSimpleEntity();
         organizerSimpleEntity = getOrganizerSimpleEntity();
     }
 
@@ -174,7 +183,7 @@ class EventServiceImplTest {
 //        given
         when(eventRepository.findById(eventId)).thenReturn(of(eventEntity));
 //        when
-        eventService.editEventById(employeeId, eventId, eventDto);
+        eventService.editEventById(mainOrganizerId, eventId, eventDto);
 //        then
         verify(eventRepository).save(any(EventEntity.class));
     }
@@ -196,12 +205,149 @@ class EventServiceImplTest {
     void shouldCallSaveMethodFromEventRepositoryInterfaceWhenEventEntityAndEmployeeEntityWillBeExistsInTheDatabase() {
 //        given
         when(eventRepository.findById(eventId)).thenReturn(of(eventEntity));
-        when(employeeService.getEmployeeSimpleEntityById(employeeId)).thenReturn(employeeSimpleEntity);
-        when(organizerService.createOrganizer(employeeSimpleEntity, eventSimpleEntity, ASSISTANT))
+        when(employeeService.getEmployeeSimpleEntityById(fourthEmployeeId)).thenReturn(fourthEmployeeSimpleEntity);
+        when(organizerService.createOrganizer(fourthEmployeeSimpleEntity, eventSimpleEntity, ASSISTANT))
                 .thenReturn(organizerSimpleEntity);
 //        when
-        eventService.addEmployeeAsOrganizer(anyLong(), employeeId, eventId);
+        eventService.addEmployeeAsOrganizer(mainOrganizerId, fourthEmployeeId, eventId);
 //        then
-        verify(eventRepository).save(any(EventEntity.class));
+        verify(eventRepository).save(eventEntity);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCall_AddEmployeeAsOrganizer_And_EventWillBeNotExistsInTheDatabase() {
+//        given
+        when(eventRepository.findById(eventId)).thenThrow(EntityNotFoundException.class);
+//        when + then
+        try {
+            assertThrows(EntityNotFoundException.class,
+                    () -> eventService.addEmployeeAsOrganizer(mainOrganizerId, employeeId, eventId));
+        } catch (EntityNotFoundException e) {
+            assertEquals("Event not found", e.getMessage());
+        }
+    }
+
+    @Test
+    void shouldThrowExceptionWhenEventWillBeNotExistsWhenCallRemoveOrganizerFromEventMethod() {
+//        given
+        when(eventRepository.findById(eventId)).thenThrow(EntityNotFoundException.class);
+//        when + then
+        try {
+            assertThrows(EntityNotFoundException.class,
+                    () -> eventService.removeOrganizerFromEvent(mainOrganizerId, employeeId, eventId));
+        } catch (EntityNotFoundException e) {
+            assertEquals("Event not found", e.getMessage());
+        }
+    }
+
+    @Test
+    void shouldThrowExceptionWhenMainOrganizerIdValueWillBeNotCorrect() {
+//        given
+        when(eventRepository.findById(eventId)).thenReturn(of(eventEntity));
+//        when + then
+        try {
+            assertThrows(OrganizerException.class,
+                    () -> eventService.removeOrganizerFromEvent(wrongMainOrganizerId, employeeId, eventId));
+        } catch (OrganizerException e) {
+            assertEquals("You dont have permission to remove organizer from an event", e.getMessage());
+        }
+    }
+
+    @Test
+    void shouldCall_RemoveByEventAndEmployee_MethodFromOrganizerService() {
+//        given
+        when(eventRepository.findById(eventId)).thenReturn(of(eventEntity));
+//        when
+        eventService.removeOrganizerFromEvent(mainOrganizerId, employeeId, eventId);
+//        then
+        verify(organizerService).removeByEventAndEmployee(eventId, employeeId);
+        verify(eventRepository).save(eventEntity);
+    }
+
+    @Test
+    void shouldThrowExceptionIn_addEmployeeAsParticipant_MethodWhenEventEntityWillBeNotExistsInTheDatabase() {
+//        given
+        when(eventRepository.findById(eventId)).thenThrow(EntityNotFoundException.class);
+//        when + then
+        try {
+            assertThrows(EntityNotFoundException.class,
+                    () -> eventService.addEmployeeAsParticipant(eventId, employeeId));
+        } catch (EntityNotFoundException e) {
+            assertEquals("Event not found", e.getMessage());
+        }
+    }
+
+    @Test
+    void shouldThrowExceptionWhen_CurrentParticipantNumber_WillBeFull() {
+//        given
+        when(eventRepository.findById(eventId)).thenReturn(of(eventEntityWithFullParticipants));
+//        when + then
+        try {
+            assertThrows(ParticipantException.class,
+                    () -> eventService.addEmployeeAsParticipant(eventId, thirdEmployeeId));
+        } catch (ParticipantException e) {
+            assertEquals("You can't sign up for an event. The number of participant has already been reached",
+                    e.getMessage());
+        }
+    }
+
+    @Test
+    void shouldThrowExceptionWhen_EmployeeWillBeExistsInEventAsOrganizer() {
+//        given
+        when(eventRepository.findById(eventId)).thenReturn(of(eventEntity));
+//        when + then
+        try {
+            assertThrows(OrganizerException.class, () -> eventService.addEmployeeAsParticipant(eventId, employeeId));
+        } catch (ParticipantException e) {
+            assertEquals("Organizer already exists in an event as organizer", e.getMessage());
+        }
+    }
+
+    @Test
+    void shouldThrowExceptionWhen_EmployeeWilBeExistsInEventAsParticipant() {
+//        given
+        when(eventRepository.findById(eventId)).thenReturn(of(eventEntity));
+//        when + then
+        try {
+            assertThrows(ParticipantException.class,
+                    () -> eventService.addEmployeeAsParticipant(eventId, thirdEmployeeId));
+        } catch (ParticipantException e) {
+            assertEquals("Employee already exists in an event as participant", e.getMessage());
+        }
+    }
+
+    @Test
+    void shouldCall_Save_Method_From_EventRepository_Interface() {
+//        given
+        when(eventRepository.findById(eventId)).thenReturn(of(eventEntity));
+        when(employeeService.getEmployeeSimpleEntityById(fourthEmployeeId)).thenReturn(fourthEmployeeSimpleEntity);
+//        when
+        eventService.addEmployeeAsParticipant(eventId, fourthEmployeeId);
+//        then
+        verify(eventRepository).save(eventEntity);
+        assertEquals(2, eventEntity.getCurrentParticipantsNumber());
+    }
+
+    @Test
+    void shouldThrowExceptionIn_removeParticipantFromEvent_MethodWhenEventEntityWillBeNotExistsInTheDatabase() {
+//        given
+        when(eventRepository.findById(eventId)).thenThrow(EntityNotFoundException.class);
+//        when + then
+        try {
+            assertThrows(EntityNotFoundException.class,
+                    () -> eventService.removeParticipantFromEvent(eventId, employeeId));
+        } catch (EntityNotFoundException e) {
+            assertEquals("Event not found", e.getMessage());
+        }
+    }
+
+    @Test
+    void shouldCall_RemoveByEventAndEmployee_From_ParticipantService_Interface() {
+//        given
+        when(eventRepository.findById(eventId)).thenReturn(of(eventEntityWithFullParticipants));
+//        when
+        eventService.removeParticipantFromEvent(eventId, thirdEmployeeId);
+//        then
+        verify(participantService).removeByEventAndEmployee(eventId, thirdEmployeeId);
     }
 }

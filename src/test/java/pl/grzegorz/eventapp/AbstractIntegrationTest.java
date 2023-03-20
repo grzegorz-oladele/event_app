@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 @ActiveProfiles("test")
 @Testcontainers
@@ -23,24 +22,22 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 public abstract class AbstractIntegrationTest {
 
     private static final String POSTGRES_IMAGE = "postgres:14.1";
-    protected final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    protected MockMvc mockMvc;
-
-    private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>(POSTGRES_IMAGE)
+    private static final PostgreSQLContainer<?> POSTGRE_SQL_CONTAINER = new PostgreSQLContainer<>(POSTGRES_IMAGE)
             .withDatabaseName("postgres")
             .withPassword("postgres")
             .withUsername("postgres");
 
+    @Autowired
+    protected MockMvc mockMvc;
+
     static {
-        postgreSQLContainer.start();
+        POSTGRE_SQL_CONTAINER.start();
     }
 
     @DynamicPropertySource
     public static void containerConfig(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+        registry.add("spring.datasource.url", POSTGRE_SQL_CONTAINER::getJdbcUrl);
+        registry.add("spring.datasource.username", POSTGRE_SQL_CONTAINER::getUsername);
+        registry.add("spring.datasource.password", POSTGRE_SQL_CONTAINER::getPassword);
     }
 }

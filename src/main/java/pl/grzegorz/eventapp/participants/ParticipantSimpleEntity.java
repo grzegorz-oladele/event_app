@@ -16,8 +16,8 @@ import static lombok.AccessLevel.PROTECTED;
 @Table(name = "participants")
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor
-@Builder(access = PRIVATE, setterPrefix = "with")
+@AllArgsConstructor(access = PRIVATE)
+@Builder(setterPrefix = "with")
 public class ParticipantSimpleEntity {
 
     @Id
