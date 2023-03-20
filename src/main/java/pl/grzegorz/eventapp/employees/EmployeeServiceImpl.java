@@ -78,12 +78,12 @@ class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void setEmployeeAsUnemployed(EmployeeEndOfWorkDto employeeEndOfWorkDto) {
-        EmployeeEntity employee = getEmployeeEntityById(employeeEndOfWorkDto.getEmployeeId());
+    public void setEmployeeAsUnemployed(long employeeId, EmployeeEndOfWorkDto employeeEndOfWorkDto) {
+        EmployeeEntity employee = getEmployeeEntityById(employeeId);
         employee.setIsEmployed(FALSE);
         employee.setDateOfEndingWork(LocalDate.parse(employeeEndOfWorkDto.getEndDateOfWork()));
         employeeRepository.save(employee);
-        log.info("Marking employee with id -> {} as not working", employeeEndOfWorkDto.getEmployeeId());
+        log.info("Marking employee with id -> {} as not working", employeeId);
     }
 
     private EmployeeEntity getEmployeeEntityById(long employeeId) {

@@ -40,9 +40,9 @@ class EmployeeController {
         employeeService.editEmployee(employeeId, employeeDto);
     }
 
-    @PatchMapping("/exemptions")
-    void markEmployeeAsUnemployed(@RequestBody EmployeeEndOfWorkDto employeeEndOfWorkDto) {
-        employeeService.setEmployeeAsUnemployed(employeeEndOfWorkDto);
+    @PatchMapping("/{employeeId}/exemptions")
+    void markEmployeeAsUnemployed(@PathVariable long employeeId, @RequestBody EmployeeEndOfWorkDto employeeEndOfWorkDto) {
+        employeeService.setEmployeeAsUnemployed(employeeId, employeeEndOfWorkDto);
     }
 
     @DeleteMapping("/{employeeId}")

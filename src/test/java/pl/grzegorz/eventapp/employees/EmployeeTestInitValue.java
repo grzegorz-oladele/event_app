@@ -2,6 +2,7 @@ package pl.grzegorz.eventapp.employees;
 
 import lombok.*;
 import pl.grzegorz.eventapp.employees.dto.input.EmployeeDto;
+import pl.grzegorz.eventapp.employees.dto.input.EmployeeEndOfWorkDto;
 import pl.grzegorz.eventapp.employees.dto.output.EmployeeInEventOutputDto;
 import pl.grzegorz.eventapp.employees.dto.output.EmployeeOutputDto;
 
@@ -183,6 +184,10 @@ public class EmployeeTestInitValue {
                 .withEmail("michal@michalowski.pl")
                 .withDepartment("PROJECT-MANAGER")
                 .build();
+    }
+
+    public static EmployeeEndOfWorkDto getEmployeeEndOfWorkDto() {
+        return new EmployeeEndOfWorkDto("2022-12-31");
     }
 
     @Getter

@@ -20,7 +20,7 @@ public interface EmployeeService {
 
     void editEmployee(long participantId, EmployeeDto employeeDto);
 
-    void setEmployeeAsUnemployed(EmployeeEndOfWorkDto employeeEndOfWorkDto);
+    void setEmployeeAsUnemployed(long employeeId, EmployeeEndOfWorkDto employeeEndOfWorkDto);
 
     void removeEmployee(long participantId);
 }
