@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
@@ -20,5 +21,10 @@ public class AppConfig implements WebMvcConfigurer {
                         .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE");
             }
         };
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }

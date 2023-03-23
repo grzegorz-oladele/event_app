@@ -16,11 +16,11 @@ public interface EmployeeService {
 
     EmployeeSimpleEntity getEmployeeSimpleEntityById(long employeeId);
 
-    void createEmployee(EmployeeDto employeeDto);
+    EmployeeSimpleEntity createEmployee(EmployeeDto employeeDto);
 
     void editEmployee(long participantId, EmployeeDto employeeDto);
 
-    void setEmployeeAsUnemployed(EmployeeEndOfWorkDto employeeEndOfWorkDto);
+    void setEmployeeAsUnemployed(long employeeId, EmployeeEndOfWorkDto employeeEndOfWorkDto);
 
     void removeEmployee(long participantId);
 }

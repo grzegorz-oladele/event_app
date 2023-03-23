@@ -2,6 +2,7 @@ package pl.grzegorz.eventapp.employees;
 
 import lombok.*;
 import pl.grzegorz.eventapp.employees.dto.input.EmployeeDto;
+import pl.grzegorz.eventapp.employees.dto.input.EmployeeEndOfWorkDto;
 import pl.grzegorz.eventapp.employees.dto.output.EmployeeInEventOutputDto;
 import pl.grzegorz.eventapp.employees.dto.output.EmployeeOutputDto;
 
@@ -95,13 +96,43 @@ public class EmployeeTestInitValue {
 
     }
 
-    static EmployeeDto getEmployeeDto() {
+    public static EmployeeDto getEmployeeDto() {
         return EmployeeDto.builder()
                 .withName("Paweł")
                 .withSurname("Pawłowski")
                 .withEmail("paweł@pawłowski.pl")
                 .withDepartment("DEVELOPER")
                 .withDateOfStartingWork("2022-01-01")
+                .build();
+    }
+
+    public static EmployeeDto getSecondEmployeeDto() {
+        return EmployeeDto.builder()
+                .withName("Mateusz")
+                .withSurname("Matuszczyk")
+                .withEmail("mateusz@matuszczyk.pl")
+                .withDepartment("DEVELOPER")
+                .withDateOfStartingWork("2022-05-22")
+                .build();
+    }
+
+    public static EmployeeDto getThirdEmployeeDto() {
+        return EmployeeDto.builder()
+                .withName("Ireneusz")
+                .withSurname("Białkowski")
+                .withEmail("ireneusz@bialkowski.pl")
+                .withDepartment("QA")
+                .withDateOfStartingWork("2022-07-01")
+                .build();
+    }
+
+    public static EmployeeDto getFourthEmployeeDto() {
+        return EmployeeDto.builder()
+                .withName("Mieczysław")
+                .withSurname("Zasada")
+                .withEmail("mieczyslaw@zasada.pl")
+                .withDepartment("PM")
+                .withDateOfStartingWork("2022-08-01")
                 .build();
     }
 
@@ -121,6 +152,26 @@ public class EmployeeTestInitValue {
                 .withName("Marcin")
                 .withSurname("Marcinkowski")
                 .withEmail("marcin@marcinkowski.pl")
+                .withDepartment("ANALYST")
+                .build();
+    }
+
+    public static EmployeeSimpleEntity getThirdEmployeeSimpleEntity() {
+        return EmployeeSimpleEntity.builder()
+                .withId(3L)
+                .withName("Arkadiusz")
+                .withSurname("Jakubowski")
+                .withEmail("arkadiusz@jakubowski.pl")
+                .withDepartment("ANALYST")
+                .build();
+    }
+
+    public static EmployeeSimpleEntity getFourthEmployeeSimpleEntity() {
+        return EmployeeSimpleEntity.builder()
+                .withId(4L)
+                .withName("Mateusz")
+                .withSurname("Matuszczyk")
+                .withEmail("mateusz@matuszczyk.pl")
                 .withDepartment("ANALYST")
                 .build();
     }
@@ -165,10 +216,16 @@ public class EmployeeTestInitValue {
                 .build();
     }
 
+    public static EmployeeEndOfWorkDto getEmployeeEndOfWorkDto() {
+        return new EmployeeEndOfWorkDto("2022-12-31");
+    }
+
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
+    @Setter
     @Builder(setterPrefix = "with")
-    private static class EmployeeTestOutputDto implements EmployeeOutputDto {
+    public static class EmployeeTestOutputDto implements EmployeeOutputDto {
 
         private Long id;
         private String name;
@@ -182,6 +239,8 @@ public class EmployeeTestInitValue {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
+    @Setter
     @Builder(setterPrefix = "with")
     public static class EmployeeInEventTestDtoOutput implements EmployeeInEventOutputDto {
 

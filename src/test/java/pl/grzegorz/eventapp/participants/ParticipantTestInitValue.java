@@ -14,6 +14,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static lombok.AccessLevel.PRIVATE;
 import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getEmployeeSimpleEntity;
+import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getThirdEmployeeSimpleEntity;
 
 @NoArgsConstructor(access = PRIVATE)
 public class ParticipantTestInitValue {
@@ -36,6 +37,13 @@ public class ParticipantTestInitValue {
                 .withEmployee(EmployeeTestInitValue.getSecondParticipant())
                 .build();
         return asList(firstParticipant, secondParticipant);
+    }
+
+    public static ParticipantSimpleEntity getParticipantSimpleEntity() {
+        return ParticipantSimpleEntity.builder()
+                .withId(1L)
+                .withEmployee(getThirdEmployeeSimpleEntity())
+                .build();
     }
 
     @Getter

@@ -1,6 +1,7 @@
 package pl.grzegorz.eventapp.exceptions;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +23,12 @@ class CustomExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(NOT_FOUND)
     ErrorResponse handleEntityNotFoundException(EntityNotFoundException e) {
+        return getErrorResponse(e.getMessage(), NOT_FOUND);
+    }
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    @ResponseStatus(NOT_FOUND)
+    ErrorResponse handleEmptyResultDataAccessException(EmptyResultDataAccessException e) {
         return getErrorResponse(e.getMessage(), NOT_FOUND);
     }
 

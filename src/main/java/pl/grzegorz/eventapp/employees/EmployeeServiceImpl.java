@@ -55,10 +55,11 @@ class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void createEmployee(EmployeeDto employeeDto) {
+    public EmployeeSimpleEntity createEmployee(EmployeeDto employeeDto) {
         EmployeeEntity employeeEntity = toEntity(employeeDto);
         employeeRepository.save(employeeEntity);
         log.info("Create new employee with id -> {}", employeeEntity.getId());
+        return toSimpleEntity(employeeEntity);
     }
 
     @Override
@@ -78,12 +79,12 @@ class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void setEmployeeAsUnemployed(EmployeeEndOfWorkDto employeeEndOfWorkDto) {
-        EmployeeEntity employee = getEmployeeEntityById(employeeEndOfWorkDto.getEmployeeId());
+    public void setEmployeeAsUnemployed(long employeeId, EmployeeEndOfWorkDto employeeEndOfWorkDto) {
+        EmployeeEntity employee = getEmployeeEntityById(employeeId);
         employee.setIsEmployed(FALSE);
         employee.setDateOfEndingWork(LocalDate.parse(employeeEndOfWorkDto.getEndDateOfWork()));
         employeeRepository.save(employee);
-        log.info("Marking employee with id -> {} as not working", employeeEndOfWorkDto.getEmployeeId());
+        log.info("Marking employee with id -> {} as not working", employeeId);
     }
 
     private EmployeeEntity getEmployeeEntityById(long employeeId) {
