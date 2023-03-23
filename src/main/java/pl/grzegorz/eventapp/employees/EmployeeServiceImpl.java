@@ -55,10 +55,11 @@ class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void createEmployee(EmployeeDto employeeDto) {
+    public EmployeeSimpleEntity createEmployee(EmployeeDto employeeDto) {
         EmployeeEntity employeeEntity = toEntity(employeeDto);
         employeeRepository.save(employeeEntity);
         log.info("Create new employee with id -> {}", employeeEntity.getId());
+        return toSimpleEntity(employeeEntity);
     }
 
     @Override

@@ -1,9 +1,6 @@
 package pl.grzegorz.eventapp.participants;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.grzegorz.eventapp.employees.EmployeeSimpleEntity;
 
 import javax.persistence.*;
@@ -18,6 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Builder(setterPrefix = "with")
+@ToString
 public class ParticipantSimpleEntity {
 
     @Id

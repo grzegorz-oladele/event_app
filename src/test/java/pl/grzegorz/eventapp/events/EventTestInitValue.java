@@ -22,7 +22,7 @@ import static java.time.LocalDateTime.parse;
 import static lombok.AccessLevel.PRIVATE;
 import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getAssistantOrganizerSimpleEntity;
 import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getOrganizerSimpleEntity;
-import static pl.grzegorz.eventapp.participants.ParticipantTestInitValue.*;
+import static pl.grzegorz.eventapp.participants.ParticipantTestInitValue.getParticipantSimpleEntity;
 
 @NoArgsConstructor(access = PRIVATE)
 public class EventTestInitValue {
@@ -53,6 +53,15 @@ public class EventTestInitValue {
                 .build();
     }
 
+    static EventDto getSecondEventDto() {
+        return EventDto.builder()
+                .withEventName("Gildia Frontend")
+                .withStartEventTime("2023-03-15T12:00")
+                .withEndEventTime("2023-04-21T16:00")
+                .withLimitOfParticipant(3)
+                .build();
+    }
+
     static EventEntity getEventEntity() {
         return EventEntity.builder()
                 .withId(1L)
@@ -66,11 +75,22 @@ public class EventTestInitValue {
                 .build();
     }
 
+    static EventEntity getEventEntityForIntegrationTest() {
+        return EventEntity.builder()
+                .withEventName("Gildia backend")
+                .withStartEventTime(parse("2023-03-17T12:00"))
+                .withEndEventTime(parse("2023-03-17T13:00"))
+                .withOrganizers(new ArrayList<>())
+                .withParticipants(new ArrayList<>())
+                .withLimitOfParticipants(2)
+                .build();
+    }
+
     static EventEntity getEventEntityWithFullParticipants() {
         return EventEntity.builder()
                 .withId(1L)
                 .withEventName("Gildia backend")
-                .withCurrentParticipantsNumber(0)
+//                .withCurrentParticipantsNumber(0)
                 .withStartEventTime(parse("2023-03-17T12:00"))
                 .withEndEventTime(parse("2023-03-17T13:00"))
                 .withOrganizers(getOrganizers())

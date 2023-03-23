@@ -96,13 +96,43 @@ public class EmployeeTestInitValue {
 
     }
 
-    static EmployeeDto getEmployeeDto() {
+    public static EmployeeDto getEmployeeDto() {
         return EmployeeDto.builder()
                 .withName("Paweł")
                 .withSurname("Pawłowski")
                 .withEmail("paweł@pawłowski.pl")
                 .withDepartment("DEVELOPER")
                 .withDateOfStartingWork("2022-01-01")
+                .build();
+    }
+
+    public static EmployeeDto getSecondEmployeeDto() {
+        return EmployeeDto.builder()
+                .withName("Mateusz")
+                .withSurname("Matuszczyk")
+                .withEmail("mateusz@matuszczyk.pl")
+                .withDepartment("DEVELOPER")
+                .withDateOfStartingWork("2022-05-22")
+                .build();
+    }
+
+    public static EmployeeDto getThirdEmployeeDto() {
+        return EmployeeDto.builder()
+                .withName("Ireneusz")
+                .withSurname("Białkowski")
+                .withEmail("ireneusz@bialkowski.pl")
+                .withDepartment("QA")
+                .withDateOfStartingWork("2022-07-01")
+                .build();
+    }
+
+    public static EmployeeDto getFourthEmployeeDto() {
+        return EmployeeDto.builder()
+                .withName("Mieczysław")
+                .withSurname("Zasada")
+                .withEmail("mieczyslaw@zasada.pl")
+                .withDepartment("PM")
+                .withDateOfStartingWork("2022-08-01")
                 .build();
     }
 

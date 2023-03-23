@@ -22,6 +22,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PRIVATE)
 @Builder(access = PROTECTED, setterPrefix = "with")
+@ToString
 class EventEntity {
 
     @Id
@@ -43,7 +44,6 @@ class EventEntity {
                 .withStartEventTime(parse(eventDto.getStartEventTime()))
                 .withEndEventTime(parse(eventDto.getEndEventTime()))
                 .withLimitOfParticipants(eventDto.getLimitOfParticipant())
-                .withCurrentParticipantsNumber(0)
                 .withOrganizers(new ArrayList<>())
                 .withParticipants(new ArrayList<>())
                 .build();

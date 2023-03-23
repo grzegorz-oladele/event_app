@@ -122,7 +122,7 @@ class EventServiceImpl implements EventService {
         EventSimpleEntity eventSimple = toSimpleEntity(event);
         ParticipantSimpleEntity participantSimple = participantService.createParticipant(employeeSimple, eventSimple);
         event.getParticipants().add(participantSimple);
-        event.setCurrentParticipantsNumber(event.getParticipants().size());
+        event.setCurrentParticipantsNumber(event.getCurrentParticipantsNumber() + 1);
         eventRepository.save(event);
     }
 

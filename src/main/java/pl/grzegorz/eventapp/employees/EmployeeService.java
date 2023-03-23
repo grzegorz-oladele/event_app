@@ -16,7 +16,7 @@ public interface EmployeeService {
 
     EmployeeSimpleEntity getEmployeeSimpleEntityById(long employeeId);
 
-    void createEmployee(EmployeeDto employeeDto);
+    EmployeeSimpleEntity createEmployee(EmployeeDto employeeDto);
 
     void editEmployee(long participantId, EmployeeDto employeeDto);
 
