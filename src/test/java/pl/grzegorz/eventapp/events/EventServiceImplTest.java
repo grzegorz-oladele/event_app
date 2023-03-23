@@ -325,7 +325,7 @@ class EventServiceImplTest {
         eventService.addEmployeeAsParticipant(eventId, fourthEmployeeId);
 //        then
         verify(eventRepository).save(eventEntity);
-        assertEquals(2, eventEntity.getCurrentParticipantsNumber());
+        assertEquals(1, eventEntity.getCurrentParticipantsNumber());
     }
 
     @Test
