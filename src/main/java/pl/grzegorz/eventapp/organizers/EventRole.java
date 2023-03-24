@@ -1,4 +1,4 @@
-package pl.grzegorz.eventapp.organizer;
+package pl.grzegorz.eventapp.organizers;
 
 public enum EventRole {
 

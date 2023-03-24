@@ -1,6 +1,6 @@
 package pl.grzegorz.eventapp.events.dto.output;
 
-import pl.grzegorz.eventapp.organizer.dto.OrganizerOutputDto;
+import pl.grzegorz.eventapp.organizers.dto.OrganizerOutputDto;
 import pl.grzegorz.eventapp.participants.dto.output.ParticipantOutputDto;
 
 import java.time.LocalDateTime;

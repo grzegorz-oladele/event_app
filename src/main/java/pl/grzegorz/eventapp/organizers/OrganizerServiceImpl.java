@@ -1,4 +1,4 @@
-package pl.grzegorz.eventapp.organizer;
+package pl.grzegorz.eventapp.organizers;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,8 +8,8 @@ import pl.grzegorz.eventapp.events.EventSimpleEntity;
 
 import javax.persistence.EntityNotFoundException;
 
-import static pl.grzegorz.eventapp.organizer.OrganizerEntity.toEntity;
-import static pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity.toSimpleEntity;
+import static pl.grzegorz.eventapp.organizers.OrganizerEntity.toEntity;
+import static pl.grzegorz.eventapp.organizers.OrganizerSimpleEntity.toSimpleEntity;
 
 @Service
 @RequiredArgsConstructor

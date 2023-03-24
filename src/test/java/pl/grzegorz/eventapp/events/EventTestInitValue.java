@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import pl.grzegorz.eventapp.events.dto.input.EventDto;
 import pl.grzegorz.eventapp.events.dto.output.EventOutputDto;
-import pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity;
-import pl.grzegorz.eventapp.organizer.OrganizerTestInitValue;
-import pl.grzegorz.eventapp.organizer.dto.OrganizerOutputDto;
+import pl.grzegorz.eventapp.organizers.OrganizerSimpleEntity;
+import pl.grzegorz.eventapp.organizers.OrganizerTestInitValue;
+import pl.grzegorz.eventapp.organizers.dto.OrganizerOutputDto;
 import pl.grzegorz.eventapp.participants.ParticipantSimpleEntity;
 import pl.grzegorz.eventapp.participants.ParticipantTestInitValue;
 import pl.grzegorz.eventapp.participants.dto.output.ParticipantOutputDto;
@@ -20,8 +20,8 @@ import java.util.List;
 
 import static java.time.LocalDateTime.parse;
 import static lombok.AccessLevel.PRIVATE;
-import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getAssistantOrganizerSimpleEntity;
-import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getOrganizerSimpleEntity;
+import static pl.grzegorz.eventapp.organizers.OrganizerTestInitValue.getAssistantOrganizerSimpleEntity;
+import static pl.grzegorz.eventapp.organizers.OrganizerTestInitValue.getOrganizerSimpleEntity;
 import static pl.grzegorz.eventapp.participants.ParticipantTestInitValue.getParticipantSimpleEntity;
 
 @NoArgsConstructor(access = PRIVATE)

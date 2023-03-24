@@ -12,8 +12,8 @@ import pl.grzegorz.eventapp.events.dto.input.EventDto;
 import pl.grzegorz.eventapp.events.dto.output.EventOutputDto;
 import pl.grzegorz.eventapp.exceptions.OrganizerException;
 import pl.grzegorz.eventapp.exceptions.ParticipantException;
-import pl.grzegorz.eventapp.organizer.OrganizerService;
-import pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity;
+import pl.grzegorz.eventapp.organizers.OrganizerService;
+import pl.grzegorz.eventapp.organizers.OrganizerSimpleEntity;
 import pl.grzegorz.eventapp.participants.ParticipantService;
 
 import javax.persistence.EntityNotFoundException;
@@ -28,9 +28,9 @@ import static org.mockito.Mockito.when;
 import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getFourthEmployeeSimpleEntity;
 import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getSecondEmployeeSimpleEntity;
 import static pl.grzegorz.eventapp.events.EventTestInitValue.*;
-import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
-import static pl.grzegorz.eventapp.organizer.EventRole.MAIN_ORGANIZER;
-import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getOrganizerSimpleEntity;
+import static pl.grzegorz.eventapp.organizers.EventRole.ASSISTANT;
+import static pl.grzegorz.eventapp.organizers.EventRole.MAIN_ORGANIZER;
+import static pl.grzegorz.eventapp.organizers.OrganizerTestInitValue.getOrganizerSimpleEntity;
 
 @ExtendWith(MockitoExtension.class)
 class EventServiceImplTest {

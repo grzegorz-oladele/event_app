@@ -1,4 +1,4 @@
-package pl.grzegorz.eventapp.organizer;
+package pl.grzegorz.eventapp.organizers;
 
 import pl.grzegorz.eventapp.employees.EmployeeSimpleEntity;
 import pl.grzegorz.eventapp.events.EventSimpleEntity;

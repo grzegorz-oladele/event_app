@@ -1,4 +1,4 @@
-package pl.grzegorz.eventapp.organizer;
+package pl.grzegorz.eventapp.organizers;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.grzegorz.eventapp.employees.EmployeeTestInitValue;
 import pl.grzegorz.eventapp.employees.dto.output.EmployeeInEventOutputDto;
-import pl.grzegorz.eventapp.organizer.dto.OrganizerOutputDto;
+import pl.grzegorz.eventapp.organizers.dto.OrganizerOutputDto;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.*;
 import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getEmployeeSimpleEntity;
 import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getSecondEmployeeSimpleEntity;
 import static pl.grzegorz.eventapp.events.EventTestInitValue.getEventSimpleEntity;
-import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
-import static pl.grzegorz.eventapp.organizer.EventRole.MAIN_ORGANIZER;
+import static pl.grzegorz.eventapp.organizers.EventRole.ASSISTANT;
+import static pl.grzegorz.eventapp.organizers.EventRole.MAIN_ORGANIZER;
 
 @NoArgsConstructor(access = PRIVATE)
 public class OrganizerTestInitValue {

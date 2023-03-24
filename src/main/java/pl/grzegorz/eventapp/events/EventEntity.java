@@ -2,7 +2,7 @@ package pl.grzegorz.eventapp.events;
 
 import lombok.*;
 import pl.grzegorz.eventapp.events.dto.input.EventDto;
-import pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity;
+import pl.grzegorz.eventapp.organizers.OrganizerSimpleEntity;
 import pl.grzegorz.eventapp.participants.ParticipantSimpleEntity;
 
 import javax.persistence.*;

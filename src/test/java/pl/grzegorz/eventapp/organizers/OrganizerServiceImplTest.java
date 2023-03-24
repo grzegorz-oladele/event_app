@@ -1,4 +1,4 @@
-package pl.grzegorz.eventapp.organizer;
+package pl.grzegorz.eventapp.organizers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,8 +18,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.grzegorz.eventapp.employees.EmployeeTestInitValue.getEmployeeSimpleEntity;
 import static pl.grzegorz.eventapp.events.EventTestInitValue.getEventSimpleEntity;
-import static pl.grzegorz.eventapp.organizer.EventRole.MAIN_ORGANIZER;
-import static pl.grzegorz.eventapp.organizer.OrganizerTestInitValue.getOrganizerEntity;
+import static pl.grzegorz.eventapp.organizers.EventRole.MAIN_ORGANIZER;
+import static pl.grzegorz.eventapp.organizers.OrganizerTestInitValue.getOrganizerEntity;
 
 @ExtendWith(MockitoExtension.class)
 class OrganizerServiceImplTest {

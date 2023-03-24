@@ -10,8 +10,8 @@ import pl.grzegorz.eventapp.events.dto.input.EventDto;
 import pl.grzegorz.eventapp.events.dto.output.EventOutputDto;
 import pl.grzegorz.eventapp.exceptions.OrganizerException;
 import pl.grzegorz.eventapp.exceptions.ParticipantException;
-import pl.grzegorz.eventapp.organizer.OrganizerService;
-import pl.grzegorz.eventapp.organizer.OrganizerSimpleEntity;
+import pl.grzegorz.eventapp.organizers.OrganizerService;
+import pl.grzegorz.eventapp.organizers.OrganizerSimpleEntity;
 import pl.grzegorz.eventapp.participants.ParticipantService;
 import pl.grzegorz.eventapp.participants.ParticipantSimpleEntity;
 
@@ -21,8 +21,8 @@ import java.util.List;
 
 import static pl.grzegorz.eventapp.events.EventEntity.toEntity;
 import static pl.grzegorz.eventapp.events.EventSimpleEntity.*;
-import static pl.grzegorz.eventapp.organizer.EventRole.ASSISTANT;
-import static pl.grzegorz.eventapp.organizer.EventRole.MAIN_ORGANIZER;
+import static pl.grzegorz.eventapp.organizers.EventRole.ASSISTANT;
+import static pl.grzegorz.eventapp.organizers.EventRole.MAIN_ORGANIZER;
 
 @Service
 @RequiredArgsConstructor
