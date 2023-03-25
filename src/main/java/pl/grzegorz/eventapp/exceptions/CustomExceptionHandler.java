@@ -3,6 +3,7 @@ package pl.grzegorz.eventapp.exceptions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -36,6 +37,12 @@ class CustomExceptionHandler {
     @ResponseStatus(BAD_REQUEST)
     ErrorResponse handleOrganizerException(OrganizerException e) {
         return getErrorResponse(e.getMessage(), BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(NOT_FOUND)
+    ErrorResponse handleUsernameNotFoundException(UsernameNotFoundException e) {
+        return getErrorResponse(e.getMessage(), NOT_FOUND);
     }
 
     @ExceptionHandler(ParticipantException.class)

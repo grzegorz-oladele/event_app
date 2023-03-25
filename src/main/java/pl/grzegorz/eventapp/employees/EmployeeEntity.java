@@ -24,7 +24,7 @@ import static lombok.AccessLevel.*;
 @AllArgsConstructor(access = PUBLIC)
 @Builder(setterPrefix = "with", access = PROTECTED)
 @ToString
-public class EmployeeEntity implements UserDetails {
+class EmployeeEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class EmployeeEntity implements UserDetails {
     private LocalDate dateOfEndingWork;
     private Boolean isEmployed;
     @Enumerated(EnumType.STRING)
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<AppUserRole> roles = new ArrayList<>();
     private Boolean locked = FALSE;
     private Boolean enabled = FALSE;
@@ -47,10 +47,13 @@ public class EmployeeEntity implements UserDetails {
         return EmployeeEntity.builder()
                 .withName(employeeDto.getName())
                 .withSurname(employeeDto.getSurname())
+                .withPassword(employeeDto.getPassword())
                 .withEmail(employeeDto.getEmail())
                 .withDepartment(employeeDto.getDepartment())
                 .withDateOfStartingWork(LocalDate.parse(employeeDto.getDateOfStartingWork()))
                 .withIsEmployed(TRUE)
+                .withEnabled(FALSE)
+                .withLocked(FALSE)
                 .build();
     }
 

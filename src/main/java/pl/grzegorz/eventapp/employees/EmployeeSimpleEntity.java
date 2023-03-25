@@ -25,6 +25,7 @@ public class EmployeeSimpleEntity {
     private Long id;
     private String name;
     private String surname;
+    private String password;
     private String email;
     private String department;
 
