@@ -1,6 +1,6 @@
 package pl.grzegorz.eventapp.exceptions;
 
-import lombok.RequiredArgsConstructor;
+import  lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,12 +12,11 @@ import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
-class CustomExceptionHandler {
+public class CustomExceptionHandler {
 
     private final HttpServletRequest request;
 
@@ -41,7 +40,7 @@ class CustomExceptionHandler {
 
     @ExceptionHandler(UsernameNotFoundException.class)
     @ResponseStatus(NOT_FOUND)
-    ErrorResponse handleUsernameNotFoundException(UsernameNotFoundException e) {
+    public ErrorResponse handleUsernameNotFoundException(UsernameNotFoundException e) {
         return getErrorResponse(e.getMessage(), NOT_FOUND);
     }
 
@@ -49,6 +48,12 @@ class CustomExceptionHandler {
     @ResponseStatus(BAD_REQUEST)
     ErrorResponse handleParticipantException(ParticipantException e) {
         return getErrorResponse(e.getMessage(), BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuthorizationHeaderException.class)
+    @ResponseStatus(FORBIDDEN)
+    ErrorResponse handleCredentialNotFoundException(AuthorizationHeaderException e) {
+        return getErrorResponse(e.getMessage(), FORBIDDEN);
     }
 
     private ErrorResponse getErrorResponse(String message, HttpStatus status) {

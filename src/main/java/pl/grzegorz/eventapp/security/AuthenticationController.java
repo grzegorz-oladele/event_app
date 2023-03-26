@@ -15,15 +15,10 @@ import pl.grzegorz.eventapp.employees.EmployeeDetailsService;
 @RequiredArgsConstructor
 class AuthenticationController {
 
-    private final AuthenticationManager authenticationManager;
-    private final EmployeeDetailsService employeeDetailsService;
-    private final JwtUtils jwtUtils;
+    private final AuthenticationService authenticationService;
 
     @PostMapping
     String authenticate(@RequestBody LoginRequest loginRequest) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-        final UserDetails user = employeeDetailsService.loadUserByUsername(loginRequest.getEmail());
-        return jwtUtils.generateToken(user);
+        return authenticationService.authenticate(loginRequest);
     }
 }

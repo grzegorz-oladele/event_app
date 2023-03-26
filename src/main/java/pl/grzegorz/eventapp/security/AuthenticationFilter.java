@@ -1,6 +1,7 @@
 package pl.grzegorz.eventapp.security;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +20,10 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
 @RequiredArgsConstructor
-public class AuthenticationFilter extends OncePerRequestFilter {
+@Slf4j
+class AuthenticationFilter extends OncePerRequestFilter {
+
+    private static final String TOKEN_PREFIX = "Bearer";
 
     private final EmployeeDetailsService employeeDetailsService;
     private final JwtUtils jwtUtils;
@@ -28,22 +32,36 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         final String authorizationHeader = request.getHeader(AUTHORIZATION);
-        final String userEmail;
+        checkAuthorizationHeader(request, response, filterChain, authorizationHeader);
         final String jwtToken;
+        jwtToken = authorizationHeader.substring(TOKEN_PREFIX.length());
+        String userEmail = jwtUtils.extractUsername(jwtToken);
+        checkUserEmailAndSecurityContextHolder(jwtToken, userEmail);
+        filterChain.doFilter(request, response);
+    }
 
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-        }
-        jwtToken = authorizationHeader.substring(7);
-        userEmail = jwtUtils.extractUsername(jwtToken);
+    private void checkUserEmailAndSecurityContextHolder(String jwtToken, String userEmail) {
         if (Objects.nonNull(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = employeeDetailsService.loadUserByUsername(userEmail);
             final boolean isTokenValid = jwtUtils.isTokenValid(jwtToken, userDetails);
-            if (isTokenValid) {
-                UsernamePasswordAuthenticationToken token =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            }
+            checkIsTokenValid(userDetails, isTokenValid);
         }
-        filterChain.doFilter(request, response);
+    }
+
+    private void checkIsTokenValid(UserDetails userDetails, boolean isTokenValid) {
+        if (isTokenValid) {
+            UsernamePasswordAuthenticationToken token =
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        }
+    }
+
+    private void checkAuthorizationHeader(HttpServletRequest request,
+                                          HttpServletResponse response,
+                                          FilterChain filterChain,
+                                          String authorizationHeader)
+            throws IOException, ServletException {
+        if (Objects.isNull(authorizationHeader) || !authorizationHeader.startsWith(TOKEN_PREFIX)) {
+            filterChain.doFilter(request, response);
+        }
     }
 }
